@@ -5,8 +5,8 @@
 class Wall {
 public:
 	Wall(Point start, Point end);
-	Point getStart();
-	Point getEnd();
+	Point getStart() const;
+	Point getEnd() const;
 	bool blocks(const PathSegment& pSeg) const;
 private:
 	Point start;
