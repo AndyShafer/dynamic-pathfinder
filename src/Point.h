@@ -12,7 +12,7 @@ public:
 	Vec2f getPos() const;
 	Vec2f getPos(float t) const;
 	Vec2f getVelocity() const;
-	std::vector<PathSegment> travelTimes(const Point& dest, float speed, float startTime) const;
+	std::vector<PathSegment> pathsTo(const Point& dest, float speed, float startTime, float waitTime) const;
 private:
 	Vec2f startPos;
 	Vec2f velocity;
