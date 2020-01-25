@@ -6,9 +6,10 @@
 
 class Solver {
 public:
-	Solver(std::vector<Wall> walls, float timeStep);
+	Solver(std::vector<Wall> walls, float speed, float timeStep);
 	Path solve(Vec2f start, Vec2f end);
 private:
 	std::vector<Wall> walls;
+	float speed;
 	float timeStep;
 };
