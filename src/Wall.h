@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Point.h"
+#include "PathSearchState.h"
 #include <vector>
 #include <math.h>
 

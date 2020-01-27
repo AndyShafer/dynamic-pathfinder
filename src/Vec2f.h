@@ -1,5 +1,7 @@
 #pragma once
 
+#include <math.h>
+
 class Vec2f {
 public:
 	Vec2f(float x, float y)
@@ -20,6 +22,9 @@ public:
 	}
 	Vec2f operator/(float div) const {
 		return Vec2f(x/div, y/div);
+	}
+	float mag() const {
+		return sqrt(x*x + y*y);
 	}
 	float x;
 	float y;

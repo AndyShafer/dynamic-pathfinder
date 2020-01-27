@@ -1,5 +1,8 @@
 #include "PathSearchState.h"
 
+PathSearchState::PathSearchState()
+	: pointId(0), startTime(0), waitTime(0), precision(1) {}
+
 PathSearchState::PathSearchState(int pointId, float startTime, float waitTime, float precision)
 	: pointId(pointId), startTime(startTime), waitTime(waitTime), precision(precision) {}
 
@@ -14,6 +17,10 @@ bool PathSearchState::operator==(const PathSearchState& other) const {
 	float diff1 = abs(startTime - other.startTime);
 	float diff2 = abs(waitTime - other.waitTime);
 	return diff1 < precision && diff2 < precision;
+}
+
+bool PathSearchState::operator!=(const PathSearchState& other) const {
+	return !(*this == other);
 }
 
 bool PathSearchState::operator<(const PathSearchState& other) const {
