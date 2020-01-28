@@ -23,6 +23,9 @@ public:
 	Vec2f operator/(float div) const {
 		return Vec2f(x/div, y/div);
 	}
+	bool operator==(const Vec2f& other) const {
+		return x == other.x && y == other.y;
+	}
 	float mag() const {
 		return sqrt(x*x + y*y);
 	}

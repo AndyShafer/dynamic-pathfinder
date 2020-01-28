@@ -2,7 +2,7 @@
 
 Path::Path(const std::vector<PathSegment>& segments)
 	: segments(segments) {
-	compressSegments();
+	//compressSegments();
 }
 
 Path::Path()
