@@ -9,6 +9,7 @@ public:
 	Vec2f getEnd() const ;
 	float getStartTime() const ;
 	float getArriveTime() const ;
+	bool operator==(const PathSegment& other) const;
 private:
 	Vec2f start;
 	Vec2f end;
