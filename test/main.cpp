@@ -3,7 +3,7 @@
 
 #include "../src/Point.h"
 #include "../src/Wall.h"
-
+#include "../src/Solver.h"
 TEST_CASE("Position of point is queried by time", "[Point]") {
 	Point notMoving(1, 2, 0, 0);
 	REQUIRE(notMoving.getPos() == Vec2f(1, 2));
@@ -56,4 +56,40 @@ TEST_CASE("Walls can determine if they are blocking a path", "[Wall]") {
 	// Test 4: Wall is in path but moves up out of the way.
 	Wall w4(Point(Vec2f(5, 5), Vec2f(0, 1.01)), Point(Vec2f(5, -5), Vec2f(0, 1.01)));
 	REQUIRE(!w4.blocksPath(path1));
+}
+
+TEST_CASE("Paths can be estimated between points", "[Solver]") {
+	// Test 1: No walls
+	std::vector<Wall> walls;
+	Solver solver1(walls, 1, .1);
+	Path solution1_1 = solver1.solve(Vec2f(0, 0), Vec2f(10, 0));
+	Path solution1_2 = solver1.solve(Vec2f(3, 0), Vec2f(0, 4));
+	REQUIRE(solution1_1.getSegments().size() == 1);
+	REQUIRE(solution1_1.getSegments()[0] == PathSegment(PathSegment(Vec2f(0, 0), Vec2f(10, 0), 0, 10)));
+	REQUIRE(solution1_2.getSegments().size() == 1);
+	REQUIRE(solution1_2.getSegments()[0] == PathSegment(PathSegment(Vec2f(3, 0), Vec2f(0, 4), 0, 5)));
+
+	// Test 2: Stationary wall blocking direct path
+	walls.push_back(Wall(Point(5, 5, 0, 0), Point(5, -4, 0, 0)));
+	Solver solver2(walls, 1, .1);
+	Path solution2_1 = solver2.solve(Vec2f(0, 0), Vec2f(10, 0));
+	REQUIRE(solution2_1.getSegments().size() == 2);
+	REQUIRE(solution2_1.getSegments()[0].getEnd() == Vec2f(5, -4));
+
+	// Test 3: Wall moving slower than movement speed.
+	walls.clear();
+	walls.push_back(Wall(Point(3, 5, 0, -1), Point(3, -4, 0, -2)));
+	Solver solver3(walls, 5, .1);
+	Path solution3_1 = solver3.solve(Vec2f(0, 0), Vec2f(6, 0));
+	REQUIRE(solution3_1.getSegments().size() == 2);
+	REQUIRE(solution3_1.getSegments()[0].getEnd() == Vec2f(3, 4));
+
+	// Test 4: Waiting for wall to change position before moving.
+	walls.clear();
+	walls.push_back(Wall(Point(1, 40, 0, -3), Point(1, -100, 0, 0)));
+	Solver solver4(walls, 1, .1);
+	Path solution4_1 = solver4.solve(Vec2f(0, 0), Vec2f(2, 0));
+	REQUIRE(solution4_1.getSegments().size() == 3);
+	REQUIRE(solution4_1.getSegments()[0].getEnd() == Vec2f(0, 0));
+	REQUIRE(solution4_1.getSegments()[1].getEnd().y < 10);
 }
