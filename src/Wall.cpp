@@ -26,7 +26,7 @@ bool Wall::blocksPath(const PathSegment& pSeg) const {
 	          (pc.y-pa.y)*(vb.x-vc.x) - (pc.x-pa.x)*(vb.y-vc.y);
 	float c = (pc.y-pa.y)*(pb.x-pc.x) - (pc.x-pa.x)*(pb.y-pc.y);
 	float disc = b*b - 4*a*c;
-	float eps = 0.0000001;
+	float eps = 0.00001;
 	// Avoid dividing by zero if path doesn't change distance from the wall.
 	std::vector<float> t;
 	if(abs(a) < eps) {
@@ -40,10 +40,10 @@ bool Wall::blocksPath(const PathSegment& pSeg) const {
 	}
 	Point pCrawl(pc, vc);
 	for(float time : t) {
-		if(time < pSeg.getStartTime() || time > pSeg.getArriveTime()) continue;
+		if(time-eps < pSeg.getStartTime() || time+eps > pSeg.getArriveTime()) continue;
 		Vec2f edge = end.getPos(time) - start.getPos(time);
 		float d = edge * (pCrawl.getPos(time) - start.getPos(time));
-		if(d > 0 && d < edge*edge) return true;
+		if(d-eps > 0 && d+eps < edge*edge) return true;
 	}
 	return false;
 }

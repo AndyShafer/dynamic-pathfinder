@@ -16,7 +16,7 @@ bool PathSearchState::operator==(const PathSearchState& other) const {
 	if(pointId != other.pointId) return false;
 	float diff1 = abs(startTime - other.startTime);
 	float diff2 = abs(waitTime - other.waitTime);
-	return diff1 < precision && diff2 < precision;
+	return diff1 < precision/2 && diff2 < precision/2;
 }
 
 bool PathSearchState::operator!=(const PathSearchState& other) const {
@@ -26,9 +26,9 @@ bool PathSearchState::operator!=(const PathSearchState& other) const {
 bool PathSearchState::operator<(const PathSearchState& other) const {
 	if(pointId < other.pointId) return true;
 	if(pointId > other.pointId) return false;
-	if(startTime < other.startTime && other.startTime - startTime >= precision) return true;
-	if(startTime > other.startTime && startTime - other.startTime >= precision) return false;
-	if(waitTime < other.waitTime && other.waitTime - waitTime >= precision) return true;
+	if(startTime < other.startTime && other.startTime - startTime >= precision/2) return true;
+	if(startTime > other.startTime && startTime - other.startTime >= precision/2) return false;
+	if(waitTime < other.waitTime && other.waitTime - waitTime >= precision/2) return true;
 	return false;
 }
 

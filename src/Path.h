@@ -13,5 +13,5 @@ public:
 	std::vector<PathSegment> getSegments() const;
 private:
 	std::vector<PathSegment> segments;
-	//void compressSegments();
+	void compressSegments();
 };

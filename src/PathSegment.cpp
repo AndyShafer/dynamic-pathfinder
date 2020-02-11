@@ -11,3 +11,7 @@ Vec2f PathSegment::getStart() const { return start; }
 Vec2f PathSegment::getEnd() const { return end; }
 float PathSegment::getStartTime() const { return startTime; }
 float PathSegment::getArriveTime() const { return arriveTime; }
+
+Vec2f PathSegment::getVelocity() const {
+	return (end - start) / (arriveTime - startTime);
+}

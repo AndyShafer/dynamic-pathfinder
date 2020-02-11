@@ -26,6 +26,9 @@ public:
 	bool operator==(const Vec2f& other) const {
 		return x == other.x && y == other.y;
 	}
+	bool operator!=(const Vec2f& other) const {
+		return !(*this == other);
+	}
 	float mag() const {
 		return sqrt(x*x + y*y);
 	}

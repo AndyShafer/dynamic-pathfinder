@@ -43,12 +43,12 @@ std::vector<PathSegment> Point::pathsTo(const Point& dest, float speed, float st
 	if(disc < -eps) return ret;
 	if(disc < eps) disc = 0;
 	float t = (-b - sqrt(disc)) / (2 * a);
-	if(t >= startTime + waitTime)
-		ret.push_back(PathSegment(getPos(startTime), dest.getPos(t), startTime+waitTime, t));
+	if(t >= 0)
+		ret.push_back(PathSegment(getPos(startTime), dest.getPos(startTime+waitTime+t), startTime+waitTime, startTime+waitTime+t));
 	if(disc != 0) {
 		t = (-b + sqrt(disc)) / (2 * a);
-		if(t >= startTime + waitTime)
-			ret.push_back(PathSegment(getPos(startTime), dest.getPos(t), startTime+waitTime, t));
+		if(t >= 0)
+			ret.push_back(PathSegment(getPos(startTime), dest.getPos(startTime+waitTime+t), startTime+waitTime, startTime+waitTime+t));
 	}
 	return ret;
 }
