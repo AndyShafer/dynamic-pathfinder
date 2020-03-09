@@ -37,6 +37,15 @@ TEST_CASE("Points can find paths between each other", "[Point]") {
 	REQUIRE(paths3.size() == 0);
 	paths3 = p1.pathsTo(p4, 2.1, 0, 0);
 	REQUIRE(paths3.size() == 1);
+
+	// Test 4: Path result has correct speed.
+	Point p5 = Point(15, -5, 0, -.2);
+	Point p6 = Point(4, 0, 0.5, -.1);
+	auto paths4 = p5.pathsTo(p6, 1, 29.8074875, 0);
+	REQUIRE(paths4.size() == 1);
+	float speed = (paths4[0].getEnd() - paths4[0].getStart()).mag() / (paths4[0].getArriveTime() - paths4[0].getStartTime());
+	REQUIRE(speed >= .999);
+	REQUIRE(speed <= 1.001);
 }
 
 TEST_CASE("Walls can determine if they are blocking a path", "[Wall]") {
@@ -92,4 +101,13 @@ TEST_CASE("Paths can be estimated between points", "[Solver]") {
 	REQUIRE(solution4_1.getSegments().size() == 3);
 	REQUIRE(solution4_1.getSegments()[0].getEnd() == Vec2f(0, 0));
 	REQUIRE(solution4_1.getSegments()[1].getEnd().y < 10);
+
+	// Test 5: Multiple walls
+	walls.clear();
+	walls.push_back(Wall(Point(3, 10, 0, -.5), Point(0, -10, 0, -.5)));
+	walls.push_back(Wall(Point(3, 0, 0, 0), Point(4, 0, .5, -.1)));
+	walls.push_back(Wall(Point(15, 5, 0, 1), Point(15, -5, 0, -.2)));
+	Solver solver5(walls, 1, .1);
+	Path solution5_1 = solver5.solve(Vec2f(0, 0), Vec2f(20, 0));
+	REQUIRE(solution5_1.getSegments().size() == 5);
 }
