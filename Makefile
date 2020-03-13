@@ -5,6 +5,10 @@ CC = g++
 lib:
 	cd src && $(CC) -c *.cpp && ar crs lib.a *.o
 
+.PHONY: editor
+editor:
+	cd editor && $(CC) *.cpp `wx-config --libs` `wx-config --cxxflags` -o editor.out
+
 .PHONY: test
 test:
 	cd test && $(CC) main.cpp ../src/lib.a -o test.out
@@ -13,9 +17,11 @@ test:
 clean:
 	cd src && rm -f *.o *.a
 	cd test && rm -f *.out
+	cd editor && rm -f *.out
 
 .PHONY: all
 all:
 	make clean
 	make lib
+	make editor
 	make test
