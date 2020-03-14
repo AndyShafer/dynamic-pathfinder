@@ -15,3 +15,7 @@ float PathSegment::getArriveTime() const { return arriveTime; }
 Vec2f PathSegment::getVelocity() const {
 	return (end - start) / (arriveTime - startTime);
 }
+
+Vec2f PathSegment::getPos(float t) const {
+	return getStart() + getVelocity()*(t-getStartTime());
+}

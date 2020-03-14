@@ -12,6 +12,21 @@ std::vector<PathSegment> Path::getSegments() const {
 	return segments;
 }
 
+void Path::addSegment(const PathSegment& segment) {
+	segments.push_back(segment);
+	compressSegments();
+}
+
+Vec2f Path::getPos(float t) {
+	if(t <= segments[0].getStartTime())
+		return segments[0].getStart();
+	if(t >= segments[segments.size()-1].getArriveTime())
+		return segments[segments.size()-1].getEnd();
+	auto comp = [](const PathSegment& seg, const float& t) { return seg.getArriveTime() < t; };
+	PathSegment seg = *lower_bound(segments.begin(), segments.end(), t, comp);
+	return seg.getPos(t);
+}
+
 void Path::compressSegments() {
 	std::vector<PathSegment> compressed;
 	for(int i = 0; i < segments.size();) {
