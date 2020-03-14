@@ -7,7 +7,7 @@ lib:
 
 .PHONY: editor
 editor:
-	cd editor && $(CC) *.cpp `wx-config --libs` `wx-config --cxxflags` -o editor.out
+	cd editor && $(CC) *.cpp ../src/lib.a `wx-config --libs` `wx-config --cxxflags` -o editor.out
 
 .PHONY: test
 test:

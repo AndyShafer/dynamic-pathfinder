@@ -6,8 +6,8 @@ EVT_PAINT(Display::paintEvent)
 
 END_EVENT_TABLE()
 
-Display::Display(wxFrame* parent) :
-wxPanel(parent)
+Display::Display(wxFrame* parent, DisplayState *ds) :
+wxPanel(parent), displayState(ds)
 {
 }
 

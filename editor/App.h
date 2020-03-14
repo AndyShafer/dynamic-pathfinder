@@ -8,9 +8,11 @@
 
 #include "Frame.h"
 #include "Display.h"
+#include "AppState.h"
 
 class App : public wxApp {
 	private:
 		virtual bool OnInit();
 		Display *display;
+		AppState *appState;
 };
