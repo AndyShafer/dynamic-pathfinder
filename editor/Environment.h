@@ -1,5 +1,11 @@
 #pragma once
 
+#include <wx/wxprec.h>
+
+#ifndef WX_PRECOMP
+#include <wx/wx.h>
+#endif
+
 #include "../src/Wall.h"
 #include "../src/Point.h"
 #include "../src/Path.h"
@@ -17,6 +23,7 @@ public:
 	void setTimeStep(float ts);
 	int numWalls() const;
 	Vec2f pathPosAt(float t);
+	void render(wxDC& dc, float t);
 private:
 	std::vector<Wall> walls;
 	Vec2f start;

@@ -2,7 +2,7 @@
 
 Environment::Environment() {
 	start = Vec2f(0, 0);
-	end = Vec2f(10, 0);
+	end = Vec2f(100, 0);
 	speed = 1;
 	timeStep = .1;
 }
@@ -48,4 +48,22 @@ Vec2f Environment::pathPosAt(float t) {
 		path = solver.solve(start, end);	
 	}
 	return path.getPos(t);
+}
+
+void Environment::render(wxDC& dc, float t) {
+	auto wallPen = *wxBLACK_PEN;
+	wallPen.SetWidth(2);
+	dc.SetPen(wallPen);
+	for(Wall& w : walls) {
+		dc.DrawLine(w.getStart().getPos(t).x, w.getStart().getPos(t).y,
+				w.getEnd().getPos(t).x, w.getEnd().getPos(t).y);
+	}
+	dc.SetPen(wxNullPen);
+	dc.SetBrush(*wxGREEN_BRUSH);
+	dc.DrawCircle(start.x, start.y, 6);
+	dc.SetBrush(*wxRED_BRUSH);
+	dc.DrawCircle(end.x, end.y, 6);
+	Vec2f pos = pathPosAt(t);
+	dc.SetBrush(*wxBLUE_BRUSH);
+	dc.DrawCircle(pos.x, pos.y, 3);
 }

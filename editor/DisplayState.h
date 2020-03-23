@@ -5,13 +5,13 @@
 class DisplayState {
 public:
 	DisplayState();
-	double getOriginX() const;
-	double getOriginY() const;
+	double getShiftX() const;
+	double getShiftY() const;
 	double getScaleX() const;
 	double getScaleY() const;
 	Environment * getEnvironment();
 private:
-	double originX = 0.0, originY = 0.0;
+	double shiftX = 50, shiftY = 50;
 	double scaleX = 1.0, scaleY = 1.0;
 	Environment env;
 };

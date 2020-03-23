@@ -3,12 +3,12 @@
 DisplayState::DisplayState() {
 }
 
-double DisplayState::getOriginX() const {
-	return originX;
+double DisplayState::getShiftX() const {
+	return shiftX;
 }
 
-double DisplayState::getOriginY() const {
-	return originY;
+double DisplayState::getShiftY() const {
+	return shiftY;
 }
 
 double DisplayState::getScaleX() const {

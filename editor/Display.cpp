@@ -7,24 +7,25 @@ EVT_PAINT(Display::paintEvent)
 END_EVENT_TABLE()
 
 Display::Display(wxFrame* parent, DisplayState *ds) :
-wxPanel(parent), displayState(ds)
-{
-}
+wxPanel(parent), displayState(ds) {}
 
 void Display::paintEvent(wxPaintEvent & evt)
 {
-    wxPaintDC dc(this);
-    render(dc);
+	wxPaintDC dc(this);
+	render(dc);
 }
 
 void Display::paintNow()
 {
-    wxClientDC dc(this);
-    render(dc);
+	wxClientDC dc(this);
+	render(dc);
 }
 
 void Display::render(wxDC&  dc)
 {
-    dc.DrawText(wxT("Testing"), 40, 60);
+	dc.SetLogicalOrigin(-displayState->getShiftX(), -displayState->getShiftY());
+	dc.SetLogicalScale(displayState->getScaleX(), displayState->getScaleY());
+	Environment *env = displayState->getEnvironment();
+	env->render(dc, 0);
 }
 
