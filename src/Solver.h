@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Wall.h"
+#include "Environment.h"
 #include "Path.h"
 #include "PathSearchState.h"
 #include <vector>
@@ -10,12 +10,10 @@
 
 class Solver {
 public:
-	Solver(std::vector<Wall> walls, float speed, float timeStep);
-	Path solve(Vec2f start, Vec2f end) const;
+	Solver(Environment *env);
+	Path solve() const;
 private:
-	std::vector<Wall> walls;
-	float speed;
-	float timeStep;
+	Environment *env;
 	Vec2f getStatePos(const PathSearchState& state, const std::vector<Point>& points) const;
 	PathSegment makePathFromStates(const PathSearchState& start, const PathSearchState& end, const std::vector<Point>& points) const;
 	bool isBlocked(const PathSegment& path) const;

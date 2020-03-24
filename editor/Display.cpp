@@ -25,7 +25,6 @@ void Display::render(wxDC&  dc)
 {
 	dc.SetLogicalOrigin(-displayState->getShiftX(), -displayState->getShiftY());
 	dc.SetLogicalScale(displayState->getScaleX(), displayState->getScaleY());
-	Environment *env = displayState->getEnvironment();
-	env->render(dc, 0);
+	displayState->render(dc, 0);
 }
 

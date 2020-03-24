@@ -70,44 +70,54 @@ TEST_CASE("Walls can determine if they are blocking a path", "[Wall]") {
 TEST_CASE("Paths can be estimated between points", "[Solver]") {
 	// Test 1: No walls
 	std::vector<Wall> walls;
-	Solver solver1(walls, 1, .1);
-	Path solution1_1 = solver1.solve(Vec2f(0, 0), Vec2f(10, 0));
-	Path solution1_2 = solver1.solve(Vec2f(3, 0), Vec2f(0, 4));
+	Environment *env1 = new Environment(Vec2f(0, 0), Vec2f(10, 0), walls, 1, .1);
+	Solver solver1(env1);
+	Path solution1_1 = solver1.solve();
+	env1->start = Vec2f(3, 0);
+	env1->end = Vec2f(0, 4);
+	Path solution1_2 = solver1.solve();
 	REQUIRE(solution1_1.getSegments().size() == 1);
 	REQUIRE(solution1_1.getSegments()[0] == PathSegment(PathSegment(Vec2f(0, 0), Vec2f(10, 0), 0, 10)));
 	REQUIRE(solution1_2.getSegments().size() == 1);
 	REQUIRE(solution1_2.getSegments()[0] == PathSegment(PathSegment(Vec2f(3, 0), Vec2f(0, 4), 0, 5)));
 
 	// Test 2: Stationary wall blocking direct path
-	walls.push_back(Wall(Point(5, 5, 0, 0), Point(5, -4, 0, 0)));
-	Solver solver2(walls, 1, .1);
-	Path solution2_1 = solver2.solve(Vec2f(0, 0), Vec2f(10, 0));
+	env1->walls.push_back(Wall(Point(5, 5, 0, 0), Point(5, -4, 0, 0)));
+	Solver solver2(env1);
+	env1->start = Vec2f(0, 0);
+	env1->end = Vec2f(10, 0);
+	Path solution2_1 = solver2.solve();
 	REQUIRE(solution2_1.getSegments().size() == 2);
 	REQUIRE(solution2_1.getSegments()[0].getEnd() == Vec2f(5, -4));
 
 	// Test 3: Wall moving slower than movement speed.
-	walls.clear();
-	walls.push_back(Wall(Point(3, 5, 0, -1), Point(3, -4, 0, -2)));
-	Solver solver3(walls, 5, .1);
-	Path solution3_1 = solver3.solve(Vec2f(0, 0), Vec2f(6, 0));
+	env1->walls.clear();
+	env1->walls.push_back(Wall(Point(3, 5, 0, -1), Point(3, -4, 0, -2)));
+	env1->end = Vec2f(6, 0);
+	env1->speed = 5;
+	Solver solver3(env1);
+	Path solution3_1 = solver3.solve();
 	REQUIRE(solution3_1.getSegments().size() == 2);
 	REQUIRE(solution3_1.getSegments()[0].getEnd() == Vec2f(3, 4));
 
 	// Test 4: Waiting for wall to change position before moving.
-	walls.clear();
-	walls.push_back(Wall(Point(1, 40, 0, -3), Point(1, -100, 0, 0)));
-	Solver solver4(walls, 1, .1);
-	Path solution4_1 = solver4.solve(Vec2f(0, 0), Vec2f(2, 0));
+	env1->walls.clear();
+	env1->walls.push_back(Wall(Point(1, 40, 0, -3), Point(1, -100, 0, 0)));
+	env1->end = Vec2f(2, 0);
+	env1->speed = 1;
+	Solver solver4(env1);
+	Path solution4_1 = solver4.solve();
 	REQUIRE(solution4_1.getSegments().size() == 3);
 	REQUIRE(solution4_1.getSegments()[0].getEnd() == Vec2f(0, 0));
 	REQUIRE(solution4_1.getSegments()[1].getEnd().y < 10);
 
 	// Test 5: Multiple walls
-	walls.clear();
-	walls.push_back(Wall(Point(3, 10, 0, -.5), Point(0, -10, 0, -.5)));
-	walls.push_back(Wall(Point(3, 0, 0, 0), Point(4, 0, .5, -.1)));
-	walls.push_back(Wall(Point(15, 5, 0, 1), Point(15, -5, 0, -.2)));
-	Solver solver5(walls, 1, .1);
-	Path solution5_1 = solver5.solve(Vec2f(0, 0), Vec2f(20, 0));
+	env1->walls.clear();
+	env1->walls.push_back(Wall(Point(3, 10, 0, -.5), Point(0, -10, 0, -.5)));
+	env1->walls.push_back(Wall(Point(3, 0, 0, 0), Point(4, 0, .5, -.1)));
+	env1->walls.push_back(Wall(Point(15, 5, 0, 1), Point(15, -5, 0, -.2)));
+	env1->end = Vec2f(20, 0);
+	Solver solver5(env1);
+	Path solution5_1 = solver5.solve();
 	REQUIRE(solution5_1.getSegments().size() == 5);
 }

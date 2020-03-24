@@ -4,14 +4,17 @@
 #define END_OFFSET 1
 #define WALLS_OFFSET 2
 
-Solver::Solver(std::vector<Wall> walls, float speed, float timeStep)
-	: walls(walls), speed(speed), timeStep(timeStep) {}
+Solver::Solver(Environment *env)
+	: env(env) {}
 
-Path Solver::solve(Vec2f start, Vec2f end) const {
+//Solver::Solver(std::vector<Wall> walls, float speed, float timeStep)
+	//: walls(walls), speed(speed), timeStep(timeStep) {}
+
+Path Solver::solve() const {
 	std::vector<Point> points;
-	points.push_back(Point(start));
-	points.push_back(Point(end));
-	for(Wall wall : walls) {
+	points.push_back(Point(env->start));
+	points.push_back(Point(env->end));
+	for(Wall wall : env->walls) {
 		points.push_back(wall.getStart());
 		points.push_back(wall.getEnd());
 	}
@@ -19,11 +22,13 @@ Path Solver::solve(Vec2f start, Vec2f end) const {
 	auto comp = [this, &points](const PathSearchState& a, const PathSearchState& b) {
 		float t1 = a.getStartTime() + a.getWaitTime();
 		float t2 = b.getStartTime() + b.getWaitTime();
-		return (t1 + (points[END_OFFSET].getPos(t1) - points[a.getPoint()].getPos(t1)).mag() / speed) > 
-		       (t2 + (points[END_OFFSET].getPos(t2) - points[b.getPoint()].getPos(t2)).mag() / speed);
+		return (t1 + (points[END_OFFSET].getPos(t1) - points[a.getPoint()].getPos(t1)).mag()
+			/ env->speed) >
+			(t2 + (points[END_OFFSET].getPos(t2) - points[b.getPoint()].getPos(t2)).mag()
+			/ env->speed);
 	};
 	std::priority_queue<PathSearchState, std::vector<PathSearchState>, decltype(comp)> next(comp);
-	next.push(PathSearchState(START_OFFSET, 0, 0, timeStep));
+	next.push(PathSearchState(START_OFFSET, 0, 0, env->timeStep));
 	prevState[next.top()] = next.top();
 	PathSearchState finalState;
 	while(!next.empty()) {
@@ -34,26 +39,33 @@ Path Solver::solve(Vec2f start, Vec2f end) const {
 			break;
 		}
 		std::vector<PathSearchState> adjStates;
-		PathSearchState waitState = PathSearchState(currentState.getPoint(), currentState.getStartTime(),
-		                                            currentState.getWaitTime() + timeStep, timeStep);
+		PathSearchState waitState = PathSearchState(currentState.getPoint(),
+				currentState.getStartTime(), currentState.getWaitTime()
+				+ env->timeStep, env->timeStep);
 		adjStates.push_back(waitState);
 		if(currentState.getPoint() == 2) {
 			int flag = 1;
 		}
 		for(int i = 0; i < points.size(); i++) {
 			if(i == currentState.getPoint()) {
-				if(currentState.getWaitTime() == 0 && points[currentState.getPoint()].getVelocity().mag() <= speed && points[currentState.getPoint()].getVelocity() != Vec2f(0, 0)) {
-					PathSearchState followState = PathSearchState(currentState.getPoint(),
-					                                              currentState.getStartTime() + timeStep,
-					                                              0, timeStep);
+				if(currentState.getWaitTime() == 0 &&
+					points[currentState.getPoint()].getVelocity().mag() <=
+					env->speed &&
+					points[currentState.getPoint()].getVelocity() != Vec2f(0, 0)) {
+					PathSearchState followState = PathSearchState(
+						currentState.getPoint(),
+						currentState.getStartTime() + env->timeStep,
+						0, env->timeStep);
 					adjStates.push_back(followState);
 				}
 			} else {
 				std::vector<PathSegment> hops =
-					points[currentState.getPoint()].pathsTo(points[i], speed, currentState.getStartTime(),
-					                                        currentState.getWaitTime());
+					points[currentState.getPoint()].pathsTo(points[i], env->speed,
+								currentState.getStartTime(),
+								currentState.getWaitTime());
 				for(PathSegment ps : hops) {
-					adjStates.push_back(PathSearchState(i, ps.getArriveTime(), 0, timeStep));
+					adjStates.push_back(PathSearchState(i, ps.getArriveTime(), 0,
+								env->timeStep));
 				}
 			}	
 		}
@@ -80,12 +92,13 @@ Vec2f Solver::getStatePos(const PathSearchState& state, const std::vector<Point>
 
 PathSegment Solver::makePathFromStates(const PathSearchState& start, const PathSearchState& end,
                                        const std::vector<Point>& points) const {
-	return PathSegment(getStatePos(start, points), getStatePos(end, points), start.getStartTime() + start.getWaitTime(),
-	                   end.getStartTime() + end.getWaitTime());
+	return PathSegment(getStatePos(start, points), getStatePos(end, points),
+			start.getStartTime() + start.getWaitTime(),
+			end.getStartTime() + end.getWaitTime());
 }
 
 bool Solver::isBlocked(const PathSegment& path) const {
-	for(Wall wall : walls) {
+	for(Wall wall : env->walls) {
 		if(wall.blocksPath(path)) return true;
 	}
 	return false;
