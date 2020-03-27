@@ -121,3 +121,21 @@ TEST_CASE("Paths can be estimated between points", "[Solver]") {
 	Path solution5_1 = solver5.solve();
 	REQUIRE(solution5_1.getSegments().size() == 5);
 }
+
+TEST_CASE("Environemnts can be saved and loaded", "[Environment]") {
+	Environment *env = new Environment();
+	env->start = Vec2f(0, 0);
+	env->end = Vec2f(20, 0);
+	env->speed = 1;
+	env->timeStep = .1;
+	env->walls.push_back(Wall(Point(3, 10, 0, -.5), Point(0, -10, 0, -.5)));
+	env->walls.push_back(Wall(Point(3, 0, 0, 0), Point(4, 0, .5, -.1)));
+	env->walls.push_back(Wall(Point(15, 5, 0, 1), Point(15, -5, 0, -.2)));
+	env->save("test.env");
+	Environment *env2 = Environment::load("test.env");
+	REQUIRE(env->start == env2->start);
+	REQUIRE(env->end == env2->end);
+	REQUIRE(abs(env->speed - env2->speed) < 0.00001f);
+	REQUIRE(abs(env->timeStep - env2->timeStep) < 0.00001f);
+	REQUIRE(env->walls.size() == env2->walls.size());
+}
