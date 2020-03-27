@@ -21,8 +21,12 @@ public:
 	double getScaleY() const;
 	Environment * getEnvironment(); // Using this will cause the path to be recalculated.
 	const Environment * getEnvironmentConst(); // Will not cause path to be recalculated.
+	void setEnvironment(Environment *e);
 	void render(wxDC& dc, float t);
+	std::string getEnvFilePath() const;
+	void setEnvFilePath(std::string filePath);
 private:
+	std::string envFilePath = "";
 	Vec2f pathPosAt(float t);
 	Path path;
 	bool pathDirty = true;

@@ -7,5 +7,5 @@ public:
 	AppState();
 	DisplayState * getDisplayState();
 private:
-	DisplayState displayState;
+	DisplayState * displayState;
 };

@@ -29,6 +29,11 @@ const Environment * DisplayState::getEnvironmentConst() {
 	return env;
 }
 
+void DisplayState::setEnvironment(Environment *e) {
+	pathDirty = true;
+	env = e;
+}
+
 void DisplayState::render(wxDC& dc, float t) {
 	auto wallPen = *wxBLACK_PEN;
 	wallPen.SetWidth(2);
@@ -45,6 +50,14 @@ void DisplayState::render(wxDC& dc, float t) {
 	Vec2f pos = pathPosAt(t);
 	dc.SetBrush(*wxBLUE_BRUSH);
 	dc.DrawCircle(pos.x, pos.y, 3);
+}
+
+std::string DisplayState::getEnvFilePath() const {
+	return envFilePath;
+}
+
+void DisplayState::setEnvFilePath(std::string filePath) {
+	envFilePath = filePath;
 }
 
 Vec2f DisplayState::pathPosAt(float t) {
