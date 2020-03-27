@@ -122,7 +122,7 @@ TEST_CASE("Paths can be estimated between points", "[Solver]") {
 	REQUIRE(solution5_1.getSegments().size() == 5);
 }
 
-TEST_CASE("Environemnts can be saved and loaded", "[Environment]") {
+TEST_CASE("Environments can be saved and loaded", "[Environment]") {
 	Environment *env = new Environment();
 	env->start = Vec2f(0, 0);
 	env->end = Vec2f(20, 0);
