@@ -7,6 +7,8 @@
 #endif
 
 #include "AppState.h"
+#include "AppController.h"
+#include "UpdateTimer.h"
 
 class Frame : public wxFrame {
 	public:
@@ -19,6 +21,8 @@ class Frame : public wxFrame {
 		void OnOpen(wxCommandEvent& event);
 
 		AppState *appState;
+		AppController *appController;
+		UpdateTimer *timer;
 
 		wxDECLARE_EVENT_TABLE();
 };
