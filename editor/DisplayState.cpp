@@ -20,6 +20,23 @@ double DisplayState::getScaleY() const {
 	return scaleY;
 }
 
+float DisplayState::getTime() const {
+	return time;
+}
+
+void DisplayState::resetTime() {
+	time = 0;
+}
+
+void DisplayState::incrementTime(float dt) {
+	time += dt;
+	if(time < 0) time = 0;
+}
+
+bool DisplayState::isRunning() const {
+	return running;
+}
+
 Environment * DisplayState::getEnvironment() {
 	return env;
 }
@@ -34,20 +51,20 @@ void DisplayState::setEnvironment(Environment *e) {
 	env = e;
 }
 
-void DisplayState::render(wxDC& dc, float t) {
+void DisplayState::render(wxDC& dc) {
 	auto wallPen = *wxBLACK_PEN;
 	wallPen.SetWidth(2);
 	dc.SetPen(wallPen);
 	for(Wall& w : env->walls) {
-		dc.DrawLine(w.getStart().getPos(t).x, w.getStart().getPos(t).y,
-				w.getEnd().getPos(t).x, w.getEnd().getPos(t).y);
+		dc.DrawLine(w.getStart().getPos(time).x, w.getStart().getPos(time).y,
+				w.getEnd().getPos(time).x, w.getEnd().getPos(time).y);
 	}
 	dc.SetPen(wxNullPen);
 	dc.SetBrush(*wxGREEN_BRUSH);
 	dc.DrawCircle(env->start.x, env->start.y, 6);
 	dc.SetBrush(*wxRED_BRUSH);
 	dc.DrawCircle(env->end.x, env->end.y, 6);
-	Vec2f pos = pathPosAt(t);
+	Vec2f pos = pathPosAt(time);
 	dc.SetBrush(*wxBLUE_BRUSH);
 	dc.DrawCircle(pos.x, pos.y, 3);
 }

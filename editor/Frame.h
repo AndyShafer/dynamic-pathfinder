@@ -21,8 +21,6 @@ class Frame : public wxFrame {
 		void OnOpen(wxCommandEvent& event);
 
 		AppState *appState;
-		AppController *appController;
-		UpdateTimer *timer;
 
 		wxDECLARE_EVENT_TABLE();
 };

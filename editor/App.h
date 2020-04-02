@@ -15,4 +15,6 @@ class App : public wxApp {
 		virtual bool OnInit();
 		Display *display;
 		AppState *appState;
+		AppController *appController;
+		UpdateTimer *timer;
 };

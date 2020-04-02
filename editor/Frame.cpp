@@ -2,8 +2,6 @@
 
 Frame::Frame(const wxString& title, const wxPoint& pos, const wxSize& size, AppState *state)
 	: wxFrame(NULL, wxID_ANY, title, pos, size), appState(state) {
-	appController = new AppController(appState);
-	timer = new UpdateTimer(appController);
 
 	wxMenu *menuFile = new wxMenu;
 	menuFile->Append(wxID_SAVE);
@@ -18,7 +16,6 @@ Frame::Frame(const wxString& title, const wxPoint& pos, const wxSize& size, AppS
 	menuBar->Append( menuHelp, "&Help" );
 	SetMenuBar( menuBar );
 	CreateStatusBar();
-	timer->start();
 }
 
 wxBEGIN_EVENT_TABLE(Frame, wxFrame)
@@ -70,4 +67,5 @@ void Frame::OnOpen(wxCommandEvent& event) {
 		return;
 	displayState->setEnvironment(Environment::load(openFileDialog.GetPath().ToStdString().c_str()));
 	displayState->setEnvFilePath(openFileDialog.GetPath().ToStdString());
+	displayState->resetTime();
 }
