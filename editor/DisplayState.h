@@ -23,6 +23,8 @@ public:
 	void resetTime();
 	void incrementTime(float dt);
 	bool isRunning() const;
+	void run();
+	void pause();
 	Environment * getEnvironment(); // Using this will cause the path to be recalculated.
 	const Environment * getEnvironmentConst(); // Will not cause path to be recalculated.
 	void setEnvironment(Environment *e);

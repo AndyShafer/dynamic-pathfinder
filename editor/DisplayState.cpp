@@ -37,6 +37,14 @@ bool DisplayState::isRunning() const {
 	return running;
 }
 
+void DisplayState::run() {
+	running = true;
+}
+
+void DisplayState::pause() {
+	running = false;
+}
+
 Environment * DisplayState::getEnvironment() {
 	return env;
 }

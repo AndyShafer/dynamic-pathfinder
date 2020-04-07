@@ -1,7 +1,8 @@
 #include "Frame.h"
 
-Frame::Frame(const wxString& title, const wxPoint& pos, const wxSize& size, AppState *state)
-	: wxFrame(NULL, wxID_ANY, title, pos, size), appState(state) {
+Frame::Frame(const wxString& title, const wxPoint& pos, const wxSize& size, AppState *state,
+		AppController *controller)
+	: wxFrame(NULL, wxID_ANY, title, pos, size), appState(state), appController(controller) {
 
 	wxMenu *menuFile = new wxMenu;
 	menuFile->Append(wxID_SAVE);
@@ -9,10 +10,16 @@ Frame::Frame(const wxString& title, const wxPoint& pos, const wxSize& size, AppS
 	menuFile->Append(wxID_OPEN);
 	menuFile->Append(wxID_EXIT);
 
+	wxMenu *menuRun = new wxMenu;
+	menuRun->Append(ID_RUN, "Run");
+	menuRun->Append(ID_PAUSE, "Pause");
+	menuRun->Append(ID_RESET, "Reset");
+
 	wxMenu *menuHelp = new wxMenu;
 	menuHelp->Append(wxID_ABOUT);
 	wxMenuBar *menuBar = new wxMenuBar;
 	menuBar->Append( menuFile, "&File" );
+	menuBar->Append( menuRun, "&Run" );
 	menuBar->Append( menuHelp, "&Help" );
 	SetMenuBar( menuBar );
 	CreateStatusBar();
@@ -24,6 +31,9 @@ wxBEGIN_EVENT_TABLE(Frame, wxFrame)
 	EVT_MENU(wxID_SAVE, Frame::OnSave)
 	EVT_MENU(wxID_SAVEAS, Frame::OnSaveAs)
 	EVT_MENU(wxID_OPEN, Frame::OnOpen)
+	EVT_MENU(ID_RUN, Frame::OnRun)
+	EVT_MENU(ID_PAUSE, Frame::OnPause)
+	EVT_MENU(ID_RESET, Frame::OnReset)
 wxEND_EVENT_TABLE()
 
 void Frame::OnExit(wxCommandEvent& event) {
@@ -68,4 +78,16 @@ void Frame::OnOpen(wxCommandEvent& event) {
 	displayState->setEnvironment(Environment::load(openFileDialog.GetPath().ToStdString().c_str()));
 	displayState->setEnvFilePath(openFileDialog.GetPath().ToStdString());
 	displayState->resetTime();
+}
+
+void Frame::OnRun(wxCommandEvent& event) {
+	appController->run();
+}
+
+void Frame::OnPause(wxCommandEvent& event) {
+	appController->pause();
+}
+
+void Frame::OnReset(wxCommandEvent& event) {
+	appController->reset();
 }

@@ -10,3 +10,19 @@ void DisplayController::update() {
 	display->Refresh();
 	display->Update();
 }
+
+void DisplayController::run() {
+	if(displayState->isRunning())
+		displayState->resetTime();
+	else
+		displayState->run();
+}
+
+void DisplayController::pause() {
+	displayState->pause();
+}
+
+void DisplayController::reset() {
+	displayState->resetTime();
+	pause();
+}
