@@ -2,7 +2,9 @@
 
 #include "AppState.h"
 #include "DisplayController.h"
-#include "Display.h"
+
+class Display;
+class DisplayController;
 
 class AppController {
 public:
@@ -13,6 +15,9 @@ public:
 	void run();
 	void pause();
 	void reset();
+	void displayMouseMove(const wxPoint& position);
+	void displayLeftDown(const wxPoint& position);
+	void displayLeftUp(const wxPoint& position);
 private:
 	AppState *appState;
 	DisplayController *displayController;

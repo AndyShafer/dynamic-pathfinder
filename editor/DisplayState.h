@@ -31,6 +31,7 @@ public:
 	void render(wxDC& dc);
 	std::string getEnvFilePath() const;
 	void setEnvFilePath(std::string filePath);
+	Vec2f convertToEnvPos(const wxPoint& position) const;
 private:
 	std::string envFilePath = "";
 	Vec2f pathPosAt(float t);

@@ -2,6 +2,9 @@
 
 #include "DisplayState.h"
 #include "Display.h"
+#include "SelectionController.h"
+
+class Display;
 
 class DisplayController {
 public:
@@ -10,7 +13,11 @@ public:
 	void run();
 	void pause();
 	void reset();
+	void mouseMove(const wxPoint& position);
+	void leftDown(const wxPoint& position);
+	void leftUp(const wxPoint& position);
 private:
 	DisplayState *displayState;
+	SelectionController *selectionController;
 	Display *display;
 };

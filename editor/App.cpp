@@ -8,7 +8,7 @@ bool App::OnInit() {
 
 	appController = new AppController(state);
 	Frame *frame = new Frame("Path Editor", wxPoint(50, 50), wxSize(450, 340), state, appController);
-	display = new Display( (wxFrame*) frame, state->getDisplayState());
+	display = new Display( (wxFrame*) frame, state->getDisplayState(), appController);
 	timer = new UpdateTimer(appController);
 	appController->setDisplay(display);
 

@@ -85,7 +85,15 @@ void DisplayState::setEnvFilePath(std::string filePath) {
 	envFilePath = filePath;
 }
 
+Vec2f DisplayState::convertToEnvPos(const wxPoint& position) const {
+	Vec2f envPos(position.x - shiftX, position.y - shiftY);
+	return envPos;
+}
+
 Vec2f DisplayState::pathPosAt(float t) {
+	if(t == 0) {
+		return env->start;
+	}
 	if(pathDirty) {
 		pathDirty = false;
 		Solver solver(env);

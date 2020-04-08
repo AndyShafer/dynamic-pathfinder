@@ -23,6 +23,26 @@ public:
 	Vec2f operator/(float div) const {
 		return Vec2f(x/div, y/div);
 	}
+	Vec2f operator+=(const Vec2f& right) {
+		x += right.x;
+		y += right.y;
+		return *this;
+	}
+	Vec2f operator-=(const Vec2f& right) {
+		x -= right.x;
+		y -= right.y;
+		return *this;
+	}
+	Vec2f operator*=(float mul) {
+		x *= mul;
+		y *= mul;
+		return *this;
+	}
+	Vec2f operator/=(float div) {
+		x /= div;
+		y /= div;
+		return *this;
+	}
 	bool operator==(const Vec2f& other) const {
 		return x == other.x && y == other.y;
 	}

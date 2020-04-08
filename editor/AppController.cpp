@@ -28,3 +28,15 @@ void AppController::pause() {
 void AppController::reset() {
 	displayController->reset();
 }
+
+void AppController::displayMouseMove(const wxPoint& position) {
+	displayController->mouseMove(position);
+}
+
+void AppController::displayLeftDown(const wxPoint& position) {
+	displayController->leftDown(position);
+}
+
+void AppController::displayLeftUp(const wxPoint& position) {
+	displayController->leftUp(position);
+}

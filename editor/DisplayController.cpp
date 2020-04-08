@@ -1,7 +1,9 @@
 #include "DisplayController.h"
 
 DisplayController::DisplayController(DisplayState *state, Display *display)
-	: displayState(state), display(display) {}
+	: displayState(state), display(display) {
+	selectionController = new SelectionController(displayState);
+}
 
 void DisplayController::update() {
 	if(displayState->isRunning()) {
@@ -25,4 +27,16 @@ void DisplayController::pause() {
 void DisplayController::reset() {
 	displayState->resetTime();
 	pause();
+}
+
+void DisplayController::mouseMove(const wxPoint& position) {
+	selectionController->mouseMove(position);
+}
+
+void DisplayController::leftDown(const wxPoint& position) {
+	selectionController->leftDown(position);
+}
+
+void DisplayController::leftUp(const wxPoint& position) {
+	selectionController->leftUp(position);
 }
