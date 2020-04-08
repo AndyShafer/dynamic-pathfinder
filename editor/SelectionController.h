@@ -1,10 +1,9 @@
 #pragma once
 
 #include "DisplayState.h"
+#include "SelectionState.h"
 
 #define SELECTION_DISTANCE 5
-
-enum SelectionType { None, Start, End, WallEndpoint };
 
 class SelectionController {
 public:
@@ -13,10 +12,6 @@ public:
 	void leftUp(const wxPoint& position);
 	void mouseMove(const wxPoint& position);
 private:
-	Vec2f prevPosition;
-	SelectionType selectionType;
-	int wallIdx;
-	int wallEndpoint;
-	bool dragging = false;
+	SelectionState *selectionState;
 	DisplayState *displayState;
 };

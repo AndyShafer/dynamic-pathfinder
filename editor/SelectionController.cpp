@@ -1,65 +1,69 @@
 #include "SelectionController.h"
 
 SelectionController::SelectionController(DisplayState *ds)
-	: displayState(ds) {}
+	: displayState(ds) {
+	selectionState = new SelectionState();
+}
 
 void SelectionController::leftDown(const wxPoint& position) {
 	Vec2f envPosition = displayState->convertToEnvPos(position);
 	const Environment *env = displayState->getEnvironmentConst();
 	if(displayState->isRunning()) {
-		selectionType = None;
+		selectionState->selectionType = None;
 	} else {
 		if((env->start - envPosition).mag() <= SELECTION_DISTANCE) {
-			selectionType = Start;
+			selectionState->selectionType = Start;
 		} else if((env->end - envPosition).mag() <= SELECTION_DISTANCE) {
-			selectionType = End;
+			selectionState->selectionType = End;
 		} else {
-			selectionType = None;
+			selectionState->selectionType = None;
 			for(int i = 0; i < env->walls.size(); i++) {
 				if((env->walls[i].start.startPos - envPosition).mag() <= SELECTION_DISTANCE) {
-					selectionType = WallEndpoint;
-					wallIdx = i;
-					wallEndpoint = 0;
+					selectionState->selectionType = WallEndpoint;
+					selectionState->wallIdx = i;
+					selectionState->wallEndpoint = 0;
 					break;
 				} else if((env->walls[i].end.startPos - envPosition).mag() <= SELECTION_DISTANCE) {
-					selectionType = WallEndpoint;
-					wallIdx = i;
-					wallEndpoint = 1;
+					selectionState->selectionType = WallEndpoint;
+					selectionState->wallIdx = i;
+					selectionState->wallEndpoint = 1;
 					break;
 				}
 			}
 		}
 	}
-	prevPosition = envPosition;
-	dragging = true;
+	selectionState->prevPosition = envPosition;
+	selectionState->dragging = true;
 }
 
 void SelectionController::leftUp(const wxPoint& position) {
-	dragging = false;	
+	selectionState->dragging = false;	
 }
 
 void SelectionController::mouseMove(const wxPoint& position) {
 	Vec2f envPosition = displayState->convertToEnvPos(position);
 	if(displayState->isRunning()) {
-		selectionType = None;
+		selectionState->selectionType = None;
 	} else {
-		if(selectionType != None && dragging) {
+		if(selectionState->selectionType != None && selectionState->dragging) {
 			Environment *env = displayState->getEnvironment();
-			switch(selectionType) {
+			switch(selectionState->selectionType) {
 			case Start:
-				env->start += envPosition - prevPosition;
+				env->start += envPosition - selectionState->prevPosition;
 				break;
 			case End:
-				env->end += envPosition - prevPosition;
+				env->end += envPosition - selectionState->prevPosition;
 				break;
 			case WallEndpoint:
-				if(wallEndpoint == 0)
-					env->walls[wallIdx].start.startPos += envPosition - prevPosition;
-				else if(wallEndpoint == 1)
-					env->walls[wallIdx].end.startPos += envPosition - prevPosition;
+				if(selectionState->wallEndpoint == 0)
+					env->walls[selectionState->wallIdx].start.startPos +=
+						envPosition - selectionState->prevPosition;
+				else if(selectionState->wallEndpoint == 1)
+					env->walls[selectionState->wallIdx].end.startPos +=
+						envPosition - selectionState->prevPosition;
 				break;
 			}
 		}
 	}
-	prevPosition = envPosition;
+	selectionState->prevPosition = envPosition;
 }
