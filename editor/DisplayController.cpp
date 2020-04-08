@@ -30,6 +30,7 @@ void DisplayController::reset() {
 }
 
 void DisplayController::mouseMove(const wxPoint& position) {
+	displayState->mouseMove(position);
 	selectionController->mouseMove(position);
 }
 
@@ -39,4 +40,12 @@ void DisplayController::leftDown(const wxPoint& position) {
 
 void DisplayController::leftUp(const wxPoint& position) {
 	selectionController->leftUp(position);
+}
+
+void DisplayController::rightDown(const wxPoint& position) {
+	displayState->startPan(position);
+}
+
+void DisplayController::rightUp(const wxPoint& position) {
+	displayState->stopPan();
 }

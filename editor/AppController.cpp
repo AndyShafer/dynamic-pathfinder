@@ -40,3 +40,11 @@ void AppController::displayLeftDown(const wxPoint& position) {
 void AppController::displayLeftUp(const wxPoint& position) {
 	displayController->leftUp(position);
 }
+
+void AppController::displayRightDown(const wxPoint& position) {
+	displayController->rightDown(position);
+}
+
+void AppController::displayRightUp(const wxPoint& position) {
+	displayController->rightUp(position);
+}

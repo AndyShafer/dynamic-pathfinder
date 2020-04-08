@@ -23,6 +23,8 @@ public:
 
 	void onLeftDown(wxMouseEvent & evt);
 	void onLeftUp(wxMouseEvent & evt);
+	void onRightDown(wxMouseEvent & evt);
+	void onRightUp(wxMouseEvent & evt);
 	void onMouseMove(wxMouseEvent & evt);
 	
 	DECLARE_EVENT_TABLE()

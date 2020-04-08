@@ -16,6 +16,8 @@ public:
 	void mouseMove(const wxPoint& position);
 	void leftDown(const wxPoint& position);
 	void leftUp(const wxPoint& position);
+	void rightDown(const wxPoint& position);
+	void rightUp(const wxPoint& position);
 private:
 	DisplayState *displayState;
 	SelectionController *selectionController;

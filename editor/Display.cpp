@@ -5,6 +5,8 @@ BEGIN_EVENT_TABLE(Display, wxPanel)
 EVT_PAINT(Display::paintEvent)
 EVT_LEFT_DOWN(Display::onLeftDown)
 EVT_LEFT_UP(Display::onLeftUp)
+EVT_RIGHT_DOWN(Display::onRightDown)
+EVT_RIGHT_UP(Display::onRightUp)
 EVT_MOTION(Display::onMouseMove)
 
 END_EVENT_TABLE()
@@ -38,7 +40,18 @@ void Display::onLeftUp(wxMouseEvent & evt) {
 	controller->displayLeftUp(mousePos);
 }
 
+void Display::onRightDown(wxMouseEvent & evt) {
+	wxPoint mousePos = evt.GetPosition();
+	controller->displayRightDown(mousePos);
+}
+
+void Display::onRightUp(wxMouseEvent & evt) {
+	wxPoint mousePos = evt.GetPosition();
+	controller->displayRightUp(mousePos);
+}
+
 void Display::onMouseMove(wxMouseEvent & evt) {
 	wxPoint mousePos = evt.GetPosition();
 	controller->displayMouseMove(mousePos);
 }
+

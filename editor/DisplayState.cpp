@@ -45,6 +45,23 @@ void DisplayState::pause() {
 	running = false;
 }
 
+void DisplayState::startPan(const wxPoint& mousePos) {
+	panning = true;
+	prevMousePos = mousePos;
+}
+
+void DisplayState::stopPan() {
+	panning = false;
+}
+
+void DisplayState::mouseMove(const wxPoint& mousePos) {
+	if(panning) {
+		shiftX += mousePos.x - prevMousePos.x;
+		shiftY += mousePos.y - prevMousePos.y;
+	}
+	prevMousePos = mousePos;
+}
+
 Environment * DisplayState::getEnvironment() {
 	return env;
 }

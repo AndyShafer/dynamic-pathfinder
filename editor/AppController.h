@@ -18,6 +18,8 @@ public:
 	void displayMouseMove(const wxPoint& position);
 	void displayLeftDown(const wxPoint& position);
 	void displayLeftUp(const wxPoint& position);
+	void displayRightDown(const wxPoint& position);
+	void displayRightUp(const wxPoint& position);
 private:
 	AppState *appState;
 	DisplayController *displayController;

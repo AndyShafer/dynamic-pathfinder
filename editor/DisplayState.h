@@ -25,6 +25,9 @@ public:
 	bool isRunning() const;
 	void run();
 	void pause();
+	void startPan(const wxPoint& mousePos);
+	void stopPan();
+	void mouseMove(const wxPoint& mousePos);
 	Environment * getEnvironment(); // Using this will cause the path to be recalculated.
 	const Environment * getEnvironmentConst(); // Will not cause path to be recalculated.
 	void setEnvironment(Environment *e);
@@ -38,6 +41,8 @@ private:
 	Path path;
 	bool pathDirty = true;
 	bool running = false;
+	bool panning = false;
+	wxPoint prevMousePos;
 	float time = 0;
 	double shiftX = 50, shiftY = 50;
 	double scaleX = 1.0, scaleY = 1.0;
