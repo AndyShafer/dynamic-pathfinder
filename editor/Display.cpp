@@ -8,6 +8,8 @@ EVT_LEFT_UP(Display::onLeftUp)
 EVT_RIGHT_DOWN(Display::onRightDown)
 EVT_RIGHT_UP(Display::onRightUp)
 EVT_MOTION(Display::onMouseMove)
+EVT_KEY_DOWN(Display::onKeyDown)
+EVT_KEY_UP(Display::onKeyUp)
 
 END_EVENT_TABLE()
 
@@ -55,3 +57,12 @@ void Display::onMouseMove(wxMouseEvent & evt) {
 	controller->displayMouseMove(mousePos);
 }
 
+void Display::onKeyDown(wxKeyEvent & evt) {
+	if(evt.GetKeyCode() == WXK_SHIFT)
+		controller->shiftDown();
+}
+
+void Display::onKeyUp(wxKeyEvent & evt) {
+	if(evt.GetKeyCode() == WXK_SHIFT)
+		controller->shiftUp();
+}

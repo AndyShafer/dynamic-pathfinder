@@ -63,11 +63,11 @@ void DisplayState::mouseMove(const wxPoint& mousePos) {
 }
 
 Environment * DisplayState::getEnvironment() {
+	pathDirty = true;
 	return env;
 }
 
 const Environment * DisplayState::getEnvironmentConst() {
-	pathDirty = true;
 	return env;
 }
 

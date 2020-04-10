@@ -7,10 +7,17 @@ SelectionController::SelectionController(DisplayState *ds)
 
 void SelectionController::leftDown(const wxPoint& position) {
 	Vec2f envPosition = displayState->convertToEnvPos(position);
-	const Environment *env = displayState->getEnvironmentConst();
 	if(displayState->isRunning()) {
 		selectionState->selectionType = None;
+	} else if (selectionState->shifted) {
+		Environment *env = displayState->getEnvironment();
+		env->walls.push_back(Wall(Point(envPosition, Vec2f(0, 0)),
+					Point(envPosition, Vec2f(0, 0))));
+		selectionState->selectionType = WallEndpoint;
+		selectionState->wallIdx = env->walls.size()-1;
+		selectionState->wallEndpoint = 1;
 	} else {
+		const Environment *env = displayState->getEnvironmentConst();
 		if((env->start - envPosition).mag() <= SELECTION_DISTANCE) {
 			selectionState->selectionType = Start;
 		} else if((env->end - envPosition).mag() <= SELECTION_DISTANCE) {
@@ -66,4 +73,12 @@ void SelectionController::mouseMove(const wxPoint& position) {
 		}
 	}
 	selectionState->prevPosition = envPosition;
+}
+
+void SelectionController::shiftDown() {
+	selectionState->shifted = true;
+}
+
+void SelectionController::shiftUp() {
+	selectionState->shifted = false;
 }

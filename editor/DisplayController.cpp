@@ -49,3 +49,11 @@ void DisplayController::rightDown(const wxPoint& position) {
 void DisplayController::rightUp(const wxPoint& position) {
 	displayState->stopPan();
 }
+
+void DisplayController::shiftDown() {
+	selectionController->shiftDown();
+}
+
+void DisplayController::shiftUp() {
+	selectionController->shiftUp();
+}

@@ -11,6 +11,8 @@ public:
 	void leftDown(const wxPoint& position);
 	void leftUp(const wxPoint& position);
 	void mouseMove(const wxPoint& position);
+	void shiftDown();
+	void shiftUp();
 private:
 	SelectionState *selectionState;
 	DisplayState *displayState;

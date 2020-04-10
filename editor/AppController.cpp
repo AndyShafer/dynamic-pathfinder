@@ -48,3 +48,11 @@ void AppController::displayRightDown(const wxPoint& position) {
 void AppController::displayRightUp(const wxPoint& position) {
 	displayController->rightUp(position);
 }
+
+void AppController::shiftDown() {
+	displayController->shiftDown();
+}
+
+void AppController::shiftUp() {
+	displayController->shiftUp();
+}

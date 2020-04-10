@@ -18,6 +18,8 @@ public:
 	void leftUp(const wxPoint& position);
 	void rightDown(const wxPoint& position);
 	void rightUp(const wxPoint& position);
+	void shiftDown();
+	void shiftUp();
 private:
 	DisplayState *displayState;
 	SelectionController *selectionController;

@@ -20,6 +20,8 @@ public:
 	void displayLeftUp(const wxPoint& position);
 	void displayRightDown(const wxPoint& position);
 	void displayRightUp(const wxPoint& position);
+	void shiftDown();
+	void shiftUp();
 private:
 	AppState *appState;
 	DisplayController *displayController;
