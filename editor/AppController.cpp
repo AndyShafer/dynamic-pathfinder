@@ -56,3 +56,7 @@ void AppController::shiftDown() {
 void AppController::shiftUp() {
 	displayController->shiftUp();
 }
+
+void AppController::deletePressed() {
+	displayController->deletePressed();
+}

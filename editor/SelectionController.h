@@ -13,6 +13,7 @@ public:
 	void mouseMove(const wxPoint& position);
 	void shiftDown();
 	void shiftUp();
+	void deletePressed();
 private:
 	SelectionState *selectionState;
 	DisplayState *displayState;

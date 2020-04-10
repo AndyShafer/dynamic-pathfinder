@@ -57,3 +57,7 @@ void DisplayController::shiftDown() {
 void DisplayController::shiftUp() {
 	selectionController->shiftUp();
 }
+
+void DisplayController::deletePressed() {
+	selectionController->deletePressed();
+}

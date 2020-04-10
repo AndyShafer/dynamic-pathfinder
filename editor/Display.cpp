@@ -58,11 +58,15 @@ void Display::onMouseMove(wxMouseEvent & evt) {
 }
 
 void Display::onKeyDown(wxKeyEvent & evt) {
-	if(evt.GetKeyCode() == WXK_SHIFT)
+	int code = evt.GetKeyCode();
+	if(code == WXK_SHIFT)
 		controller->shiftDown();
+	else if(code == WXK_BACK || code == WXK_DELETE)
+		controller->deletePressed();
 }
 
 void Display::onKeyUp(wxKeyEvent & evt) {
-	if(evt.GetKeyCode() == WXK_SHIFT)
+	int code = evt.GetKeyCode();
+	if(code == WXK_SHIFT)
 		controller->shiftUp();
 }

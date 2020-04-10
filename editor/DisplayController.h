@@ -20,6 +20,7 @@ public:
 	void rightUp(const wxPoint& position);
 	void shiftDown();
 	void shiftUp();
+	void deletePressed();
 private:
 	DisplayState *displayState;
 	SelectionController *selectionController;

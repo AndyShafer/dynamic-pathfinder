@@ -82,3 +82,11 @@ void SelectionController::shiftDown() {
 void SelectionController::shiftUp() {
 	selectionState->shifted = false;
 }
+
+void SelectionController::deletePressed() {
+	if(selectionState->selectionType == WallEndpoint) {
+		Environment *env = displayState->getEnvironment();
+		env->walls.erase(env->walls.begin() + selectionState->wallIdx);
+		selectionState->selectionType = None;
+	}
+}

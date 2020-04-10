@@ -22,6 +22,7 @@ public:
 	void displayRightUp(const wxPoint& position);
 	void shiftDown();
 	void shiftUp();
+	void deletePressed();
 private:
 	AppState *appState;
 	DisplayController *displayController;
