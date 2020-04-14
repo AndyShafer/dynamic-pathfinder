@@ -31,11 +31,13 @@ Path Solver::solve() const {
 	next.push(PathSearchState(START_OFFSET, 0, 0, env->timeStep));
 	prevState[next.top()] = next.top();
 	PathSearchState finalState;
+	bool pathExists = false;
 	while(!next.empty()) {
 		PathSearchState currentState = next.top();
 		next.pop();
 		if(currentState.getPoint() == END_OFFSET) {
 			finalState = currentState;
+			pathExists = true;
 			break;
 		}
 		std::vector<PathSearchState> adjStates;
@@ -78,11 +80,13 @@ Path Solver::solve() const {
 		}
 	}
 	std::vector<PathSegment> segments;
-	while(prevState[finalState] != finalState) {
-		segments.push_back(makePathFromStates(prevState[finalState], finalState, points));
-		finalState = prevState[finalState];
-	}
-	reverse(segments.begin(), segments.end());
+	if(pathExists) {
+		while(prevState[finalState] != finalState) {
+			segments.push_back(makePathFromStates(prevState[finalState], finalState, points));
+			finalState = prevState[finalState];
+		}
+		reverse(segments.begin(), segments.end());
+	} 
 	return Path(segments);
 }
 

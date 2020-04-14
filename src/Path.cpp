@@ -27,6 +27,11 @@ Vec2f Path::getPos(float t) {
 	return seg.getPos(t);
 }
 
+float Path::getArriveTime() {
+	if(segments.size() == 0) return 0;
+	return segments[segments.size()-1].getArriveTime();
+}
+
 void Path::compressSegments() {
 	std::vector<PathSegment> compressed;
 	for(int i = 0; i < segments.size();) {

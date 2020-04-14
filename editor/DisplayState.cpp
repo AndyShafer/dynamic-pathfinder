@@ -31,6 +31,7 @@ void DisplayState::resetTime() {
 void DisplayState::incrementTime(float dt) {
 	time += dt;
 	if(time < 0) time = 0;
+	if(time > path.getArriveTime()) time = path.getArriveTime();
 }
 
 bool DisplayState::isRunning() const {
@@ -38,6 +39,11 @@ bool DisplayState::isRunning() const {
 }
 
 void DisplayState::run() {
+	if(pathDirty) {
+		pathDirty = false;
+		Solver solver(env);
+		path = solver.solve();	
+	}
 	running = true;
 }
 
@@ -64,6 +70,8 @@ void DisplayState::mouseMove(const wxPoint& mousePos) {
 
 Environment * DisplayState::getEnvironment() {
 	pathDirty = true;
+	resetTime();
+	pause();
 	return env;
 }
 
@@ -73,6 +81,8 @@ const Environment * DisplayState::getEnvironmentConst() {
 
 void DisplayState::setEnvironment(Environment *e) {
 	pathDirty = true;
+	resetTime();
+	pause();
 	env = e;
 }
 

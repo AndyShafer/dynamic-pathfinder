@@ -11,6 +11,7 @@ public:
 	Path();
 	void addSegment(const PathSegment& segment);
 	Vec2f getPos(float t);
+	float getArriveTime();
 	std::vector<PathSegment> getSegments() const;
 private:
 	std::vector<PathSegment> segments;
