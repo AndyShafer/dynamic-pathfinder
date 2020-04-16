@@ -7,9 +7,6 @@
 Solver::Solver(Environment *env)
 	: env(env) {}
 
-//Solver::Solver(std::vector<Wall> walls, float speed, float timeStep)
-	//: walls(walls), speed(speed), timeStep(timeStep) {}
-
 Path Solver::solve() const {
 	std::vector<Point> points;
 	points.push_back(Point(env->start));
@@ -21,11 +18,12 @@ Path Solver::solve() const {
 	std::map<PathSearchState, PathSearchState> prevState;
 	auto comp = [this, &points](const PathSearchState& a, const PathSearchState& b) {
 		float t1 = a.getStartTime() + a.getWaitTime();
-		float t2 = b.getStartTime() + b.getWaitTime();
-		return (t1 + (points[END_OFFSET].getPos(t1) - points[a.getPoint()].getPos(t1)).mag()
-			/ env->speed) >
-			(t2 + (points[END_OFFSET].getPos(t2) - points[b.getPoint()].getPos(t2)).mag()
+		t1 = (t1 + (points[END_OFFSET].getPos(t1) - points[a.getPoint()].getPos(a.getStartTime())).mag()
 			/ env->speed);
+		float t2 = b.getStartTime() + b.getWaitTime();
+		t2 = (t2 + (points[END_OFFSET].getPos(t2) - points[b.getPoint()].getPos(b.getStartTime())).mag()
+			/ env->speed);
+		return t1 > t2;
 	};
 	std::priority_queue<PathSearchState, std::vector<PathSearchState>, decltype(comp)> next(comp);
 	next.push(PathSearchState(START_OFFSET, 0, 0, env->timeStep));
@@ -45,9 +43,6 @@ Path Solver::solve() const {
 				currentState.getStartTime(), currentState.getWaitTime()
 				+ env->timeStep, env->timeStep);
 		adjStates.push_back(waitState);
-		if(currentState.getPoint() == 2) {
-			int flag = 1;
-		}
 		for(int i = 0; i < points.size(); i++) {
 			if(i == currentState.getPoint()) {
 				if(currentState.getWaitTime() == 0 &&
@@ -87,6 +82,7 @@ Path Solver::solve() const {
 		}
 		reverse(segments.begin(), segments.end());
 	} 
+	auto p = Path(segments);
 	return Path(segments);
 }
 

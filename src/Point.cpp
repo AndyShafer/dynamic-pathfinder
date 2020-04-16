@@ -11,7 +11,7 @@ Point::Point(float px, float py, float vx, float vy)
 	: startPos(Vec2f(px, py)), velocity(Vec2f(vx, vy)) {}
 
 Vec2f Point::getPos() const {
-	return getPos(0);
+	return startPos;
 }
 
 Vec2f Point::getPos(float t) const {
@@ -33,8 +33,9 @@ std::vector<PathSegment> Point::pathsTo(const Point& dest, float speed, float st
 	float a = -speed*speed + vdx*vdx + vdy*vdy;
 	float b = 2*((pdx-psx)*vdx + (pdy-psy)*vdy);
 	float c = (pdx-psx)*(pdx-psx)+(pdy-psy)*(pdy-psy);
-	float eps = -.000000001;
+	float eps = .000001;
 	float disc = b*b - 4*a*c;
+	if(abs(a) < eps) return ret;
 	if(disc < -eps) return ret;
 	if(disc < eps) disc = 0;
 	float t = (-b - sqrt(disc)) / (2 * a);
