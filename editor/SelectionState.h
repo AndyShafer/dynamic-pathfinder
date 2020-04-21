@@ -8,5 +8,4 @@ public:
 	int wallIdx;
 	int wallEndpoint;
 	bool dragging = false;
-	bool shifted = false;
 };

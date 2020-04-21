@@ -86,6 +86,10 @@ void DisplayState::setEnvironment(Environment *e) {
 	env = e;
 }
 
+void DisplayState::setPathDirty(bool b) {
+	pathDirty = b;
+}
+
 void DisplayState::render(wxDC& dc) {
 	auto wallPen = *wxBLACK_PEN;
 	wallPen.SetWidth(2);

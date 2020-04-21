@@ -27,7 +27,6 @@ public:
 	void onRightUp(wxMouseEvent & evt);
 	void onMouseMove(wxMouseEvent & evt);
 	void onKeyDown(wxKeyEvent & evt);
-	void onKeyUp(wxKeyEvent & evt);
 	
 	DECLARE_EVENT_TABLE()
 private:

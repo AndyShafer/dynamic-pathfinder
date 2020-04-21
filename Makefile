@@ -11,7 +11,7 @@ editor:
 
 .PHONY: test
 test:
-	cd test && $(CC) -g main.cpp ../src/lib.a -o test.out
+	cd test && $(CC) -g -O3 main.cpp ../src/lib.a -o test.out
 
 .PHONY: clean
 clean:

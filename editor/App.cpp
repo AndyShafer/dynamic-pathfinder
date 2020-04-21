@@ -11,6 +11,7 @@ bool App::OnInit() {
 	display = new Display( (wxFrame*) frame, state->getDisplayState(), appController);
 	timer = new UpdateTimer(appController);
 	appController->setDisplay(display);
+	appController->getDisplayController()->getSelectionController()->setToolBar(frame->getToolBar());
 
 	sizer->Add(display, 1, wxEXPAND);
 

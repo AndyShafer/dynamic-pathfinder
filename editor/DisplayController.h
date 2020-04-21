@@ -6,21 +6,23 @@
 
 class Display;
 
+class SelectionController;
+
 class DisplayController {
 public:
 	DisplayController(DisplayState *state, Display *display);
+	SelectionController *getSelectionController();
 	void update();
 	void run();
 	void pause();
 	void reset();
-	void mouseMove(const wxPoint& position);
-	void leftDown(const wxPoint& position);
-	void leftUp(const wxPoint& position);
-	void rightDown(const wxPoint& position);
-	void rightUp(const wxPoint& position);
-	void shiftDown();
-	void shiftUp();
+	void mouseMove(wxMouseEvent& evt);
+	void leftDown(wxMouseEvent& evt);
+	void leftUp(wxMouseEvent& evt);
+	void rightDown(wxMouseEvent& evt);
+	void rightUp(wxMouseEvent& evt);
 	void deletePressed();
+	void envLoaded();
 private:
 	DisplayState *displayState;
 	SelectionController *selectionController;

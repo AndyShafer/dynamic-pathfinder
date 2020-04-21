@@ -5,9 +5,15 @@ DisplayController::DisplayController(DisplayState *state, Display *display)
 	selectionController = new SelectionController(displayState);
 }
 
+SelectionController *DisplayController::getSelectionController() {
+	return selectionController;
+}
+
 void DisplayController::update() {
 	if(displayState->isRunning()) {
 		displayState->incrementTime(1.0f);
+	} else {
+		selectionController->checkToolBar();
 	}
 	display->Refresh();
 	display->Update();
@@ -29,35 +35,31 @@ void DisplayController::reset() {
 	pause();
 }
 
-void DisplayController::mouseMove(const wxPoint& position) {
-	displayState->mouseMove(position);
-	selectionController->mouseMove(position);
+void DisplayController::mouseMove(wxMouseEvent& evt) {
+	displayState->mouseMove(evt.GetPosition());
+	selectionController->mouseMove(evt);
 }
 
-void DisplayController::leftDown(const wxPoint& position) {
-	selectionController->leftDown(position);
+void DisplayController::leftDown(wxMouseEvent& evt) {
+	selectionController->leftDown(evt);
 }
 
-void DisplayController::leftUp(const wxPoint& position) {
-	selectionController->leftUp(position);
+void DisplayController::leftUp(wxMouseEvent& evt) {
+	selectionController->leftUp(evt);
 }
 
-void DisplayController::rightDown(const wxPoint& position) {
-	displayState->startPan(position);
+void DisplayController::rightDown(wxMouseEvent& evt) {
+	displayState->startPan(evt.GetPosition());
 }
 
-void DisplayController::rightUp(const wxPoint& position) {
+void DisplayController::rightUp(wxMouseEvent& evt) {
 	displayState->stopPan();
-}
-
-void DisplayController::shiftDown() {
-	selectionController->shiftDown();
-}
-
-void DisplayController::shiftUp() {
-	selectionController->shiftUp();
 }
 
 void DisplayController::deletePressed() {
 	selectionController->deletePressed();
+}
+
+void DisplayController::envLoaded() {
+	selectionController->envLoaded();
 }

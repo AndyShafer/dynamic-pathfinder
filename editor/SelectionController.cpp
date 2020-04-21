@@ -5,11 +5,16 @@ SelectionController::SelectionController(DisplayState *ds)
 	selectionState = new SelectionState();
 }
 
-void SelectionController::leftDown(const wxPoint& position) {
+void SelectionController::setToolBar(ToolBar *tb) {
+	toolBar = tb;
+}
+
+void SelectionController::leftDown(wxMouseEvent& evt) {
+	wxPoint position = evt.GetPosition();
 	Vec2f envPosition = displayState->convertToEnvPos(position);
 	if(displayState->isRunning()) {
 		selectionState->selectionType = None;
-	} else if (selectionState->shifted) {
+	} else if (evt.ShiftDown()) {
 		Environment *env = displayState->getEnvironment();
 		env->walls.push_back(Wall(Point(envPosition, Vec2f(0, 0)),
 					Point(envPosition, Vec2f(0, 0))));
@@ -41,13 +46,17 @@ void SelectionController::leftDown(const wxPoint& position) {
 	}
 	selectionState->prevPosition = envPosition;
 	selectionState->dragging = true;
+	updateToolBar();
+	toolBar->update();
 }
 
-void SelectionController::leftUp(const wxPoint& position) {
+void SelectionController::leftUp(wxMouseEvent& evt) {
 	selectionState->dragging = false;	
+	toolBar->update();
 }
 
-void SelectionController::mouseMove(const wxPoint& position) {
+void SelectionController::mouseMove(wxMouseEvent& evt) {
+	wxPoint position = evt.GetPosition();
 	Vec2f envPosition = displayState->convertToEnvPos(position);
 	if(displayState->isRunning()) {
 		selectionState->selectionType = None;
@@ -73,14 +82,7 @@ void SelectionController::mouseMove(const wxPoint& position) {
 		}
 	}
 	selectionState->prevPosition = envPosition;
-}
-
-void SelectionController::shiftDown() {
-	selectionState->shifted = true;
-}
-
-void SelectionController::shiftUp() {
-	selectionState->shifted = false;
+	toolBar->update();
 }
 
 void SelectionController::deletePressed() {
@@ -88,5 +90,60 @@ void SelectionController::deletePressed() {
 		Environment *env = displayState->getEnvironment();
 		env->walls.erase(env->walls.begin() + selectionState->wallIdx);
 		selectionState->selectionType = None;
+		updateToolBar();
 	}
+}
+
+void SelectionController::checkToolBar() {
+	if(toolBar) {
+		BoundFloatCtrl *inputBox = toolBar->getFocusedInput();
+		if(inputBox) {
+			if(inputBox->updateBoundValue()) {
+				displayState->setPathDirty(true);
+			}
+		}
+	}
+}
+
+void SelectionController::updateToolBar() {
+	switch(selectionState->selectionType) {
+	case None:	
+		toolBar->getXInput()->unbind();
+		toolBar->getYInput()->unbind();
+		toolBar->getVxInput()->unbind();
+		toolBar->getVyInput()->unbind();
+		break;
+	case Start:
+		toolBar->getXInput()->bind(&displayState->getEnvironment()->start.x);
+		toolBar->getYInput()->bind(&displayState->getEnvironment()->start.y);
+		toolBar->getVxInput()->unbind();
+		toolBar->getVyInput()->unbind();
+		break;
+	case End:
+		toolBar->getXInput()->bind(&displayState->getEnvironment()->end.x);
+		toolBar->getYInput()->bind(&displayState->getEnvironment()->end.y);
+		toolBar->getVxInput()->unbind();
+		toolBar->getVyInput()->unbind();
+		break;
+	case WallEndpoint:
+		Point *p;
+		if(selectionState->wallEndpoint == 0)
+			p = &displayState->getEnvironment()->walls[selectionState->wallIdx].start;
+		else
+			p = &displayState->getEnvironment()->walls[selectionState->wallIdx].end;
+
+		toolBar->getXInput()->bind(&p->startPos.x);
+		toolBar->getYInput()->bind(&p->startPos.y);
+		toolBar->getVxInput()->bind(&p->velocity.x);
+		toolBar->getVyInput()->bind(&p->velocity.y);
+		break;
+	}
+}
+
+void SelectionController::envLoaded() {
+	selectionState->selectionType = None;
+	updateToolBar();
+	Environment *env = displayState->getEnvironment();
+	toolBar->getSpeedInput()->bind(&env->speed);
+	toolBar->getTimeStepInput()->bind(&env->timeStep);
 }

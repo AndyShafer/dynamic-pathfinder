@@ -9,12 +9,18 @@
 #include "AppState.h"
 #include "AppController.h"
 #include "UpdateTimer.h"
+#include "ToolBar.h"
+
+class ToolBar;
+class AppController;
 
 class Frame : public wxFrame {
 	public:
 		Frame(const wxString& title, const wxPoint& pos, const wxSize& size, AppState *state,
 				AppController *controller);
+		ToolBar *getToolBar();
 	private:
+		ToolBar *toolBar;
 		void OnExit(wxCommandEvent& event);
 		void OnAbout(wxCommandEvent& event);
 		void OnSave(wxCommandEvent& event);

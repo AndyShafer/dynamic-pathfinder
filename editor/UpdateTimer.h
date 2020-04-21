@@ -3,6 +3,8 @@
 #include "AppState.h"
 #include "AppController.h"
 
+class AppController;
+
 class UpdateTimer : public wxTimer {
 public:
 	UpdateTimer(AppController *controller);

@@ -31,6 +31,7 @@ public:
 	Environment * getEnvironment(); // Using this will cause the path to be recalculated.
 	const Environment * getEnvironmentConst(); // Will not cause path to be recalculated.
 	void setEnvironment(Environment *e);
+	void setPathDirty(bool b);
 	void render(wxDC& dc);
 	std::string getEnvFilePath() const;
 	void setEnvFilePath(std::string filePath);

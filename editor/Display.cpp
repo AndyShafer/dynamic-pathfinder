@@ -9,7 +9,7 @@ EVT_RIGHT_DOWN(Display::onRightDown)
 EVT_RIGHT_UP(Display::onRightUp)
 EVT_MOTION(Display::onMouseMove)
 EVT_KEY_DOWN(Display::onKeyDown)
-EVT_KEY_UP(Display::onKeyUp)
+//EVT_KEY_UP(Display::onKeyUp)
 
 END_EVENT_TABLE()
 
@@ -33,40 +33,31 @@ void Display::render(wxDC&  dc) {
 }
 
 void Display::onLeftDown(wxMouseEvent & evt) {
-	wxPoint mousePos = evt.GetPosition();
-	controller->displayLeftDown(mousePos);
+	controller->displayLeftDown(evt);
+	SetFocus();
 }
 
 void Display::onLeftUp(wxMouseEvent & evt) {
-	wxPoint mousePos = evt.GetPosition();
-	controller->displayLeftUp(mousePos);
+	controller->displayLeftUp(evt);
 }
 
 void Display::onRightDown(wxMouseEvent & evt) {
-	wxPoint mousePos = evt.GetPosition();
-	controller->displayRightDown(mousePos);
+	controller->displayRightDown(evt);
+	SetFocus();
 }
 
 void Display::onRightUp(wxMouseEvent & evt) {
-	wxPoint mousePos = evt.GetPosition();
-	controller->displayRightUp(mousePos);
+	controller->displayRightUp(evt);
 }
 
 void Display::onMouseMove(wxMouseEvent & evt) {
-	wxPoint mousePos = evt.GetPosition();
-	controller->displayMouseMove(mousePos);
+	if(HasFocus())
+		controller->displayMouseMove(evt);
 }
+
 
 void Display::onKeyDown(wxKeyEvent & evt) {
 	int code = evt.GetKeyCode();
-	if(code == WXK_SHIFT)
-		controller->shiftDown();
-	else if(code == WXK_BACK || code == WXK_DELETE)
+	if(code == WXK_BACK || code == WXK_DELETE)
 		controller->deletePressed();
-}
-
-void Display::onKeyUp(wxKeyEvent & evt) {
-	int code = evt.GetKeyCode();
-	if(code == WXK_SHIFT)
-		controller->shiftUp();
 }

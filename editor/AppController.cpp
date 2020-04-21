@@ -13,6 +13,10 @@ void AppController::setDisplay(Display *display) {
 	displayController = new DisplayController(appState->getDisplayState(), display);
 }
 
+DisplayController *AppController::getDisplayController() {
+	return displayController;
+}
+
 void AppController::update() {
 	displayController->update();
 }
@@ -29,34 +33,30 @@ void AppController::reset() {
 	displayController->reset();
 }
 
-void AppController::displayMouseMove(const wxPoint& position) {
-	displayController->mouseMove(position);
+void AppController::displayMouseMove(wxMouseEvent& evt) {
+	displayController->mouseMove(evt);
 }
 
-void AppController::displayLeftDown(const wxPoint& position) {
-	displayController->leftDown(position);
+void AppController::displayLeftDown(wxMouseEvent& evt) {
+	displayController->leftDown(evt);
 }
 
-void AppController::displayLeftUp(const wxPoint& position) {
-	displayController->leftUp(position);
+void AppController::displayLeftUp(wxMouseEvent& evt) {
+	displayController->leftUp(evt);
 }
 
-void AppController::displayRightDown(const wxPoint& position) {
-	displayController->rightDown(position);
+void AppController::displayRightDown(wxMouseEvent& evt) {
+	displayController->rightDown(evt);
 }
 
-void AppController::displayRightUp(const wxPoint& position) {
-	displayController->rightUp(position);
-}
-
-void AppController::shiftDown() {
-	displayController->shiftDown();
-}
-
-void AppController::shiftUp() {
-	displayController->shiftUp();
+void AppController::displayRightUp(wxMouseEvent& evt) {
+	displayController->rightUp(evt);
 }
 
 void AppController::deletePressed() {
 	displayController->deletePressed();
+}
+
+void AppController::envLoaded() {
+	displayController->envLoaded();
 }

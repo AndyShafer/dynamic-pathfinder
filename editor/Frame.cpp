@@ -22,6 +22,10 @@ Frame::Frame(const wxString& title, const wxPoint& pos, const wxSize& size, AppS
 	menuBar->Append( menuRun, "&Run" );
 	menuBar->Append( menuHelp, "&Help" );
 	SetMenuBar( menuBar );
+
+	toolBar = new ToolBar(this, appState);
+	SetToolBar(toolBar->getToolBar());
+	
 	CreateStatusBar();
 }
 
@@ -35,6 +39,10 @@ wxBEGIN_EVENT_TABLE(Frame, wxFrame)
 	EVT_MENU(ID_PAUSE, Frame::OnPause)
 	EVT_MENU(ID_RESET, Frame::OnReset)
 wxEND_EVENT_TABLE()
+
+ToolBar *Frame::getToolBar() {
+	return toolBar;
+}
 
 void Frame::OnExit(wxCommandEvent& event) {
 	Close( true );
@@ -76,6 +84,7 @@ void Frame::OnOpen(wxCommandEvent& event) {
 	if(openFileDialog.ShowModal() == wxID_CANCEL)
 		return;
 	displayState->setEnvironment(Environment::load(openFileDialog.GetPath().ToStdString().c_str()));
+	appController->envLoaded();
 	displayState->setEnvFilePath(openFileDialog.GetPath().ToStdString());
 	displayState->resetTime();
 }
