@@ -1,9 +1,10 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
+#include <stdio.h>
 
-#include "../src/Point.h"
-#include "../src/Wall.h"
-#include "../src/Solver.h"
+#include <Point.h>
+#include <Wall.h>
+#include <Solver.h>
 TEST_CASE("Position of point is queried by time", "[Point]") {
 	Point notMoving(1, 2, 0, 0);
 	REQUIRE(notMoving.getPos() == Vec2f(1, 2));
@@ -131,8 +132,11 @@ TEST_CASE("Environments can be saved and loaded", "[Environment]") {
 	env->walls.push_back(Wall(Point(3, 10, 0, -.5), Point(0, -10, 0, -.5)));
 	env->walls.push_back(Wall(Point(3, 0, 0, 0), Point(4, 0, .5, -.1)));
 	env->walls.push_back(Wall(Point(15, 5, 0, 1), Point(15, -5, 0, -.2)));
+
 	env->save("test.env");
 	Environment *env2 = Environment::load("test.env");
+	remove("test.env");
+
 	REQUIRE(env->start == env2->start);
 	REQUIRE(env->end == env2->end);
 	REQUIRE(abs(env->speed - env2->speed) < 0.00001f);

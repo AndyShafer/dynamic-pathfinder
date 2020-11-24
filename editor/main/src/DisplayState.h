@@ -6,11 +6,11 @@
 #include <wx/wx.h>
 #endif
 
-#include "../src/Environment.h"
-#include "../src/Wall.h"
-#include "../src/Point.h"
-#include "../src/Path.h"
-#include "../src/Solver.h"
+#include <Environment.h>
+#include <Wall.h>
+#include <Point.h>
+#include <Path.h>
+#include <Solver.h>
 
 class DisplayState {
 public:

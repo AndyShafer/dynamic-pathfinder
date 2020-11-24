@@ -3,21 +3,21 @@ CC = g++
 
 .PHONY: lib
 lib:
-	cd src && $(CC) -g -O3 -c *.cpp && ar crs ../target/lib.a *.o
+	cd target && $(CC) -g -O3 -c ../dypf/main/src/*.cpp && ar crs lib/dypf.a *.o && cp ../dypf/main/src/*.h include
 
 .PHONY: editor
 editor:
-	cd editor && $(CC) -g -O3 *.cpp ../target/lib.a `wx-config --libs` `wx-config --cxxflags` -o ../target/editor.out
+	cd target && $(CC) -g -O3 ../editor/main/src/*.cpp lib/dypf.a -I ./include `wx-config --libs` `wx-config --cxxflags` -o editor.out
 
 .PHONY: test
 test:
-	cd test && $(CC) -g -O3 main.cpp ../src/lib.a -o ../target/test.out
+	cd target && $(CC) -g -O3 ../dypf/test/src/main.cpp lib/dypf.a -I ./include -o test.out
 
 .PHONY: clean
 clean:
-	cd src && rm -f *.o *.a
-	cd test && rm -f *.out
-	cd editor && rm -f *.out
+	cd target && rm -f *.o *.out
+	cd target/lib && rm -f *.a
+	cd target/include && rm -f *.h
 
 .PHONY: all
 all:
