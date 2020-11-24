@@ -3,15 +3,15 @@ CC = g++
 
 .PHONY: lib
 lib:
-	cd src && $(CC) -g -O3 -c *.cpp && ar crs lib.a *.o
+	cd src && $(CC) -g -O3 -c *.cpp && ar crs ../target/lib.a *.o
 
 .PHONY: editor
 editor:
-	cd editor && $(CC) -g -O3 *.cpp ../src/lib.a `wx-config --libs` `wx-config --cxxflags` -o editor.out
+	cd editor && $(CC) -g -O3 *.cpp ../target/lib.a `wx-config --libs` `wx-config --cxxflags` -o ../target/editor.out
 
 .PHONY: test
 test:
-	cd test && $(CC) -g -O3 main.cpp ../src/lib.a -o test.out
+	cd test && $(CC) -g -O3 main.cpp ../src/lib.a -o ../target/test.out
 
 .PHONY: clean
 clean:

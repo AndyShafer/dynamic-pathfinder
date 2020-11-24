@@ -36,3 +36,5 @@
 
 # Test generated env files
 test/*.env
+
+target/*
