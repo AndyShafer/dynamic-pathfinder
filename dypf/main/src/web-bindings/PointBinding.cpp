@@ -1,5 +1,4 @@
 #include <emscripten/bind.h>
-//#include <functional>
 #include "../Point.h"
 
 typedef Vec2f (Point::*PointGetPos1)() const;
