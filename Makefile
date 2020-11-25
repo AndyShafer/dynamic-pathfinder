@@ -7,11 +7,11 @@ lib:
 	cd target && $(CC) -g -O3 -c ../dypf/main/src/*.cpp && ar crs lib/dypf.a *.o && cp ../dypf/main/src/*.h include
 
 .PHONY: editor
-editor:
+editor: lib
 	cd target && $(CC) -g -O3 ../editor/main/src/*.cpp lib/dypf.a -I ./include `wx-config --libs` `wx-config --cxxflags` -o editor.out
 
 .PHONY: test
-test:
+test: lib
 	cd target && $(CC) -g -O3 ../dypf/test/src/main.cpp lib/dypf.a -I ./include -o test.out
 
 .PHONY: web
@@ -25,9 +25,4 @@ clean:
 	cd target/include && rm -f *.h
 
 .PHONY: all
-all:
-	make clean
-	make lib
-	make web
-	make editor
-	make test
+all: clean lib web editor test
