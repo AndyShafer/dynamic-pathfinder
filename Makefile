@@ -28,5 +28,6 @@ clean:
 all:
 	make clean
 	make lib
+	make web
 	make editor
 	make test

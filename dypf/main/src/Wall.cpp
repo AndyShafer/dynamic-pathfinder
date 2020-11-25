@@ -17,10 +17,6 @@ bool Wall::blocksPath(const PathSegment& pSeg) const {
 	Vec2f vc = (pSeg.getEnd() - pSeg.getStart()) / (pSeg.getArriveTime() - pSeg.getStartTime());
 	Vec2f pc = pSeg.getStart() - vc * pSeg.getStartTime();
 	// at^2 + bt + c = 0
-	//float a = (vb.x - va.x) * (vc.y - va.y) - (vc.x - va.x) * (vb.y - va.y);
-	//float b = (vb.x - va.x) * (pc.y -pa.y) + (pb.x - pa.x) * (vc.y - va.y) -
-			(vc.x - va.x) * (pb.y - pa.y) - (pc.x - pa.x) * (vb.y - va.y);
-	//float c = (pb.x - pa.x) * (pc.y - pa.y) - (pc.x - pa.x) * (pb.y - pa.y);
 	float a = (vc.y-va.y)*(vb.x-vc.x) - (vc.x-va.x)*(vb.y-vc.y);
 	float b = (vc.y-va.y)*(pb.x-pc.x) - (vc.x-va.x)*(pb.y-pc.y) +
 	          (pc.y-pa.y)*(vb.x-vc.x) - (pc.x-pa.x)*(vb.y-vc.y);
