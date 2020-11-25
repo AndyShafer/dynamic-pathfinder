@@ -4,7 +4,6 @@
 using namespace emscripten;
 
 EMSCRIPTEN_BINDINGS(pathsegment_binding) {
-	//Vec2f (*getPosFP1)() const = &Point::getPos;
 	class_<PathSegment>("PathSegment")
 		.constructor<Vec2f, Vec2f, float, float>()
 		.function("getStart", &PathSegment::getStart)

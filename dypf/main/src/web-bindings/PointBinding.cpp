@@ -7,7 +7,6 @@ typedef Vec2f (Point::*PointGetPos2)(float) const;
 using namespace emscripten;
 
 EMSCRIPTEN_BINDINGS(point_binding) {
-	//Vec2f (*getPosFP1)() const = &Point::getPos;
 	class_<Point>("Point")
 		.constructor<Vec2f>()
 		.constructor<Vec2f, Vec2f>()
