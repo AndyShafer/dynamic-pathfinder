@@ -7,6 +7,8 @@ class Display extends React.Component {
 	}
 
 	render() {
-		 return <canvas id="display" width="1200" height="700" style={{border: '3px solid #000000'}}></canvas>;
+		 return (
+			<canvas id="display" width="1080" height="600" style={{border: '3px solid #000000'}}></canvas>
+		 );
 	}
 }

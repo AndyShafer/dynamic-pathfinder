@@ -11,11 +11,11 @@ class App extends React.Component {
 
 	render() {
 		return (
-			<div>
-				<ControlBar />
-				<Display />
-				<PlayBar />
-			</div>
+			<React.Fragment>
+				<div className="row"><div className="col"><ControlBar /></div></div>
+				<div className="row"><div className="col"><Display /></div></div>
+				<div className="row"><div className="col"><PlayBar /></div></div>
+			</React.Fragment>
 		);
 	}
 }
