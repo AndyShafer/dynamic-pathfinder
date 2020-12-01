@@ -16,7 +16,7 @@ test: lib
 
 .PHONY: web
 web:
-	cd target && $(EM) --bind ../dypf/main/src/*.cpp ../dypf/main/src/web-bindings/*.cpp -o dypf.js
+	$(EM) --bind dypf/main/src/*.cpp dypf/main/src/web-bindings/*.cpp -o web-app/js/dypf.js
 
 .PHONY: clean
 clean:
