@@ -11,4 +11,5 @@ class Display extends React.Component {
 			<canvas id="display" width="1080" height="600" style={{border: '3px solid #000000'}}></canvas>
 		 );
 	}
+
 }
