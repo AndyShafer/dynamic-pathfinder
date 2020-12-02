@@ -8,8 +8,10 @@ EMSCRIPTEN_BINDINGS(environment_binding) {
 		.constructor<>()
 		.constructor<Vec2f, Vec2f, std::vector<Wall>, float, float>()
 		.property("start", &Environment::start)
-		.property("end", &Environment::start)
-		.property("walls", &Environment::end)
+		.property("end", &Environment::end)
+		.property("walls", &Environment::walls)
 		.property("speed", &Environment::speed)
 		.property("timeStep", &Environment::timeStep);
+
+	register_vector<Wall>("vector<Wall>");
 }
