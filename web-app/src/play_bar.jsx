@@ -3,21 +3,19 @@
 class PlayBar extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			paused: true
-		};
+		this.state = {};
 	}
 
 	play = () => {
-		this.setState({ paused: false })
+		this.props.onPlayClicked();
 	}
 
 	pause = () => {
-		this.setState({ paused: true })
+		this.props.onPauseClicked();
 	}
 
 	getPlayOrPauseButton = () => {
-		if(this.state.paused) {
+		if(this.props.paused) {
 			return <button type="button" onClick={this.play} className="btn btn-default btn-primary">Play</button>
 		} else {
 			return <button type="button" onClick={this.pause} className="btn btn-default btn-primary">Pause</button>

@@ -3,6 +3,10 @@
 
 using namespace emscripten;
 
+Environment *getEnvironmentPointer(Environment& e) {
+	return &e;
+}
+
 EMSCRIPTEN_BINDINGS(environment_binding) {
 	class_<Environment>("Environment")
 		.constructor<>()
@@ -14,4 +18,6 @@ EMSCRIPTEN_BINDINGS(environment_binding) {
 		.property("timeStep", &Environment::timeStep);
 
 	register_vector<Wall>("vector<Wall>");
+
+	function("getEnvironmentPointer", &getEnvironmentPointer, allow_raw_pointers());
 }
