@@ -14,11 +14,11 @@ class App extends React.Component {
 				walls: [
 					{
 						id: 0,
-						point1: {x: 100, y: 50, vx: 0, vy: 10},
-						point2: {x: 100, y: 150, vx: 10, vy: 0}
+						point1: {x: 100, y: 50, vx: 0, vy: 20},
+						point2: {x: 100, y: 150, vx: 20, vy: 0}
 					}
 				],
-				speed: 10,
+				speed: 25,
 				time: 0
 			},
 			paused: true,
@@ -29,7 +29,6 @@ class App extends React.Component {
 				var st = this.state;
 				st.env.time += updateIntervalMillis / 1000;
 				this.setState(st);
-				console.log(st.env.time);
 			}
 		}, updateIntervalMillis);
 	}
@@ -61,7 +60,7 @@ class App extends React.Component {
 		return (
 			<React.Fragment>
 				<div className="row"><div className="col"><ControlBar /></div></div>
-				<div className="row"><div className="col"><Display env={this.state.env}/></div></div>
+				<div className="row"><div className="col"><Display env={this.state.env} path={this.state.path}/></div></div>
 				<div className="row"><div className="col"><PlayBar onPlayClicked={this.onPlayClicked} onPauseClicked={this.onPauseClicked} paused={this.state.paused}/></div></div>
 			</React.Fragment>
 		);

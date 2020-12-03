@@ -6,6 +6,14 @@ class Display extends React.Component {
 		this.state = {};
 	}
 
+	pathPos = () => {
+		if(this.props.path != null) {
+			var pos = this.props.path.getPos(this.props.env.time);
+			return <circle cx={pos.x} cy={pos.y} r="5" fill="black" />
+		}
+		return null;
+	}
+
 	render() {
 		 return (
 			<svg id="display" width="1080" height="600" style={{border: '3px solid #000000'}}>
@@ -16,6 +24,7 @@ class Display extends React.Component {
 					y1={wall.point1.y + this.props.env.time * wall.point1.vy}
 					x2={wall.point2.x + this.props.env.time * wall.point2.vx}
 					y2={wall.point2.y + this.props.env.time * wall.point2.vy} stroke="black" strokeWidth="2" />) }
+			 	{ this.pathPos() }
 			</svg>
 		 );
 	}
