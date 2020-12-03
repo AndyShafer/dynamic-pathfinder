@@ -2,6 +2,7 @@
 
 
 const e = React.createElement;
+const updateIntervalMillis = 30;
 
 class App extends React.Component {
 	constructor(props) {
@@ -18,11 +19,19 @@ class App extends React.Component {
 					}
 				],
 				speed: 10,
-				time: 4
+				time: 0
 			},
 			paused: true,
 			path: null
 		};
+		setInterval(() => {
+			if(this.state.paused == false && this.state.path != null) {
+				var st = this.state;
+				st.env.time += updateIntervalMillis / 1000;
+				this.setState(st);
+				console.log(st.env.time);
+			}
+		}, updateIntervalMillis);
 	}
 
 	computePath = () => {
