@@ -46,14 +46,21 @@ class App extends React.Component {
 	}
 
 	onPlayClicked = () => {
-		this.setState({paused: false});
+		this.setState({ paused: false });
 		if(this.state.path == null) {
 			this.computePath();
 		}
 	}
 
 	onPauseClicked = () => {
-		this.setState({paused: true});
+		this.setState({ paused: true });
+	}
+
+	onResetClicked = () => {
+		var st = this.state;
+		st.paused = true;
+		st.env.time =  0;
+		this.setState(st);
 	}
 
 	render() {
@@ -61,7 +68,9 @@ class App extends React.Component {
 			<React.Fragment>
 				<div className="row"><div className="col"><ControlBar /></div></div>
 				<div className="row"><div className="col"><Display env={this.state.env} path={this.state.path}/></div></div>
-				<div className="row"><div className="col"><PlayBar onPlayClicked={this.onPlayClicked} onPauseClicked={this.onPauseClicked} paused={this.state.paused}/></div></div>
+				<div className="row"><div className="col">
+					<PlayBar onPlayClicked={this.onPlayClicked} onPauseClicked={this.onPauseClicked} onResetClicked={this.onResetClicked} paused={this.state.paused}/>
+				</div></div>
 			</React.Fragment>
 		);
 	}

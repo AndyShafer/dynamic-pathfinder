@@ -14,6 +14,10 @@ class PlayBar extends React.Component {
 		this.props.onPauseClicked();
 	}
 
+	reset = () => {
+		this.props.onResetClicked();
+	}
+
 	getPlayOrPauseButton = () => {
 		if(this.props.paused) {
 			return <button type="button" onClick={this.play} className="btn btn-default btn-primary">Play</button>
@@ -25,7 +29,7 @@ class PlayBar extends React.Component {
 	render() {
 		 return (
 			<div id="play-bar" style={{border: '3px solid #000000'}}>
-				<button type="button" className="btn btn-default btn-primary">Back</button>
+				<button type="button" onClick={this.reset} className="btn btn-default btn-primary">Back</button>
 			 	{ this.getPlayOrPauseButton() }
 				<button type="button" className="btn btn-default btn-primary">Replay</button>
 			</div>
