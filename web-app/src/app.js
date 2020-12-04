@@ -113,7 +113,8 @@ class App extends React.Component {
 			<React.Fragment>
 				<div className="row"><div className="col"><ControlBar setMode={this.setMode}/></div></div>
 				<div className="row"><div className="col">
-					<Display env={this.state.env} path={this.state.path} mode={this.state.mode} onMouseMove={this.onMouseMove} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp}/>
+					<Display env={this.state.env} path={this.state.path} mode={this.state.mode} selection={this.state.selection}
+						onMouseMove={this.onMouseMove} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp}/>
 				</div></div>
 				<div className="row"><div className="col">
 					<PlayBar onPlayClicked={this.onPlayClicked} onPauseClicked={this.onPauseClicked} onResetClicked={this.onResetClicked} paused={this.state.paused}/>
