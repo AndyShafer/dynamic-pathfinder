@@ -18,6 +18,23 @@ class Display extends React.Component {
 		return null;
 	}
 
+	wallSelectCircles = (wall) => {
+		if(this.props.mode == "move" || this.props.mode == "select") {
+			return (
+				<React.Fragment>
+					<circle cx={wall.point1.x + this.props.env.time * wall.point1.vx}
+						cy={wall.point1.y + this.props.env.time * wall.point1.vy}
+						r="5" stroke="black" strokeWidth="2" fillOpacity="0"
+						onMouseDown={ this.mouseDown({ lineId: wall.id, endpoint: "point1" }) } onMouseUp={ this.mouseUp } />
+					<circle cx={wall.point2.x + this.props.env.time * wall.point2.vx}
+						cy={wall.point2.y + this.props.env.time * wall.point2.vy}
+						r="5" stroke="black" strokeWidth="1" fillOpacity="0"
+						onMouseDown={ this.mouseDown({ lineId: wall.id, endpoint: "point2" }) } onMouseUp={ this.mouseUp } />
+				</React.Fragment>
+			);
+		}
+	}
+
 	mouseDown = (point) => {
 		return () => this.props.onMouseDown(point);
 	}
@@ -47,14 +64,7 @@ class Display extends React.Component {
 							x2={wall.point2.x + this.props.env.time * wall.point2.vx}
 							y2={wall.point2.y + this.props.env.time * wall.point2.vy}
 							stroke="black" strokeWidth="2"/>
-						<circle cx={wall.point1.x + this.props.env.time * wall.point1.vx}
-							cy={wall.point1.y + this.props.env.time * wall.point1.vy}
-							r="5" stroke="black" strokeWidth="2" fillOpacity="0"
-							onMouseDown={ this.mouseDown({ lineId: wall.id, endpoint: "point1" }) } onMouseUp={ this.mouseUp } />
-						<circle cx={wall.point2.x + this.props.env.time * wall.point2.vx}
-							cy={wall.point2.y + this.props.env.time * wall.point2.vy}
-							r="5" stroke="black" strokeWidth="1" fillOpacity="0"
-							onMouseDown={ this.mouseDown({ lineId: wall.id, endpoint: "point2" }) } onMouseUp={ this.mouseUp } />
+						{ this.wallSelectCircles(wall) }
 					</React.Fragment>
 				)) }
 			 	{ this.pathPos() }

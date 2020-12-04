@@ -22,6 +22,7 @@ class App extends React.Component {
 				time: 0
 			},
 			paused: true,
+			mode: "move",
 			path: null,
 			selection: null
 		};
@@ -68,8 +69,12 @@ class App extends React.Component {
 		this.setState({path});
 	}
 
+	setMode = (mode) => {
+		this.setState({ mode, selection: null });
+	}
+
 	onPlayClicked = () => {
-		this.setState({ paused: false });
+		this.setState({ paused: false, mode: "animate" });
 		if(this.state.path == null) {
 			this.computePath();
 		}
@@ -82,6 +87,7 @@ class App extends React.Component {
 	onResetClicked = () => {
 		var st = this.state;
 		st.paused = true;
+		st.mode = "move";
 		st.env.time =  0;
 		this.setState(st);
 	}
@@ -97,7 +103,7 @@ class App extends React.Component {
 	}
 
 	onMouseMove = (pos) => {
-		if(this.state.paused && this.state.selection != null) {
+		if(this.state.paused && this.state.selection != null && this.state.mode == "move") {
 			this.setSelectionPos(pos);
 		}
 	}
@@ -105,9 +111,9 @@ class App extends React.Component {
 	render() {
 		return (
 			<React.Fragment>
-				<div className="row"><div className="col"><ControlBar /></div></div>
+				<div className="row"><div className="col"><ControlBar setMode={this.setMode}/></div></div>
 				<div className="row"><div className="col">
-					<Display env={this.state.env} path={this.state.path} onMouseMove={this.onMouseMove} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp}/>
+					<Display env={this.state.env} path={this.state.path} mode={this.state.mode} onMouseMove={this.onMouseMove} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp}/>
 				</div></div>
 				<div className="row"><div className="col">
 					<PlayBar onPlayClicked={this.onPlayClicked} onPauseClicked={this.onPauseClicked} onResetClicked={this.onResetClicked} paused={this.state.paused}/>
