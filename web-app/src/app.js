@@ -93,7 +93,7 @@ class App extends React.Component {
 	}
 
 	onMouseDown = (point) => {
-		if(this.state.paused) {
+		if(this.state.mode == "move") {
 			this.setState({ selection: point, path: null });
 		}
 	}
@@ -108,13 +108,19 @@ class App extends React.Component {
 		}
 	}
 
+	onMouseClick = (point) => {
+		if(this.state.mode == "select") {
+			this.setState({ selection: point });
+		}
+	}
+
 	render() {
 		return (
 			<React.Fragment>
 				<div className="row"><div className="col"><ControlBar setMode={this.setMode}/></div></div>
 				<div className="row"><div className="col">
 					<Display env={this.state.env} path={this.state.path} mode={this.state.mode} selection={this.state.selection}
-						onMouseMove={this.onMouseMove} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp}/>
+						onMouseMove={this.onMouseMove} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} onMouseClick={this.onMouseClick}/>
 				</div></div>
 				<div className="row"><div className="col">
 					<PlayBar onPlayClicked={this.onPlayClicked} onPauseClicked={this.onPauseClicked} onResetClicked={this.onResetClicked} paused={this.state.paused}/>

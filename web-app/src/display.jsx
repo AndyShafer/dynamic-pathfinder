@@ -36,11 +36,13 @@ class Display extends React.Component {
 					<circle cx={wall.point1.x + this.props.env.time * wall.point1.vx}
 						cy={wall.point1.y + this.props.env.time * wall.point1.vy}
 						r="5" stroke={ this.getStroke({ lineId: wall.id, endpoint: "point1" }) } strokeWidth="2" fillOpacity="0"
-						onMouseDown={ this.mouseDown({ lineId: wall.id, endpoint: "point1" }) } onMouseUp={ this.mouseUp } />
+						onMouseDown={ this.mouseDown({ lineId: wall.id, endpoint: "point1" }) } onMouseUp={ this.mouseUp }
+						onClick={ this.mouseClick({ lineId: wall.id, endpoint: "point1"}) }/>
 					<circle cx={wall.point2.x + this.props.env.time * wall.point2.vx}
 						cy={wall.point2.y + this.props.env.time * wall.point2.vy}
 						r="5" stroke={ this.getStroke({ lineId: wall.id, endpoint: "point2" }) } strokeWidth="2" fillOpacity="0"
-						onMouseDown={ this.mouseDown({ lineId: wall.id, endpoint: "point2" }) } onMouseUp={ this.mouseUp } />
+						onMouseDown={ this.mouseDown({ lineId: wall.id, endpoint: "point2" }) } onMouseUp={ this.mouseUp }
+						onClick={ this.mouseClick({ lineId: wall.id, endpoint: "point2"}) }/>
 				</React.Fragment>
 			);
 		}
@@ -63,13 +65,17 @@ class Display extends React.Component {
 		this.props.onMouseMove(cursorpt);
 	}
 
+	mouseClick = (point) => {
+		return () => this.props.onMouseClick(point);
+	}
+
 	render() {
 		 return (
 			<svg id="display" width="1080" height="600" style={{ border: '3px solid #000000' }} ref={(ref) => this.svg = ref} onMouseMove={ this.mouseMove }>
 				<circle cx={this.props.env.start.x} cy={this.props.env.start.y} r="10" stroke={this.getStroke("start")} strokeWidth="2" fill="green"
-			 		onMouseDown={ this.mouseDown("start") } onMouseUp={ this.mouseUp } />
+			 		onMouseDown={ this.mouseDown("start") } onMouseUp={ this.mouseUp } onClick={ this.mouseClick("start") } />
 				<circle cx={this.props.env.end.x} cy={this.props.env.end.y} r="10" stroke={this.getStroke("end")} strokeWidth="2" fill="red"
-			 		onMouseDown={ this.mouseDown("end") } onMouseUp={ this.mouseUp } />
+			 		onMouseDown={ this.mouseDown("end") } onMouseUp={ this.mouseUp } onClick={ this.mouseClick("end") }/>
 			 	{ this.props.env.walls.map(wall => (
 					<React.Fragment key={wall.id} >
 						<line x1={wall.point1.x + this.props.env.time * wall.point1.vx}
