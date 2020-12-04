@@ -22,7 +22,8 @@ class App extends React.Component {
 				time: 0
 			},
 			paused: true,
-			path: null
+			path: null,
+			selection: null
 		};
 		setInterval(() => {
 			if(this.state.paused == false && this.state.path != null) {
@@ -31,6 +32,28 @@ class App extends React.Component {
 				this.setState(st);
 			}
 		}, updateIntervalMillis);
+	}
+
+	setSelectionPos = (pos) => {
+		var e = this.state.env;
+		if(this.state.selection == "start") {
+			e.start.x = pos.x;
+			e.start.y = pos.y;
+		} else if(this.state.selection == "end") {
+			e.end.x = pos.x;
+			e.end.y = pos.y;
+		} else if(this.state.selection != null && this.state.selection.lineId != null && this.state.selection.endpoint != null) {
+			e.walls.map(wall =>
+				{
+					if(wall.id == this.state.selection.lineId) {
+						wall[this.state.selection.endpoint].x = pos.x;
+						wall[this.state.selection.endpoint].y = pos.y;
+					}
+					return wall;
+				}
+			);
+		}
+		this.setState({ env: e });
 	}
 
 	computePath = () => {
@@ -63,11 +86,29 @@ class App extends React.Component {
 		this.setState(st);
 	}
 
+	onMouseDown = (point) => {
+		if(this.state.paused) {
+			this.setState({ selection: point, path: null });
+		}
+	}
+
+	onMouseUp = () => {
+		this.setState({ selection: null });
+	}
+
+	onMouseMove = (pos) => {
+		if(this.state.paused && this.state.selection != null) {
+			this.setSelectionPos(pos);
+		}
+	}
+
 	render() {
 		return (
 			<React.Fragment>
 				<div className="row"><div className="col"><ControlBar /></div></div>
-				<div className="row"><div className="col"><Display env={this.state.env} path={this.state.path}/></div></div>
+				<div className="row"><div className="col">
+					<Display env={this.state.env} path={this.state.path} onMouseMove={this.onMouseMove} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp}/>
+				</div></div>
 				<div className="row"><div className="col">
 					<PlayBar onPlayClicked={this.onPlayClicked} onPauseClicked={this.onPauseClicked} onResetClicked={this.onResetClicked} paused={this.state.paused}/>
 				</div></div>
