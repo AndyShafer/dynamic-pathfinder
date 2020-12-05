@@ -4,6 +4,12 @@
 const e = React.createElement;
 const updateIntervalMillis = 30;
 
+function isNumeric(str) {
+	if (typeof str != "string") return false
+	return !isNaN(str) && 
+	!isNaN(parseFloat(str)) 
+}
+	
 class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -87,7 +93,7 @@ class App extends React.Component {
 	}
 
 	onPlayClicked = () => {
-		this.setState({ paused: false, mode: "animate" });
+		this.setState({ paused: false, mode: "animate", selection: null });
 		if(this.state.path == null) {
 			this.computePath();
 		}
@@ -143,10 +149,33 @@ class App extends React.Component {
 		this.setState( { env, wallCount: this.state.wallCount + 1 } );
 	}
 
+	onInputChanged = (field, value) => {
+		if(!isNumeric(value)) return;
+		var v = parseFloat(value);
+		var env = this.state.env;
+		if(field == "speed") {
+			env.speed = v;
+		} else if(this.state.selection == "start") {
+				env.start[field] = v;
+		} else if(this.state.selection == "end") {
+				env.end[field] = v;
+		} else if(this.state.selection != null && this.state.selection.lineId != null && this.state.selection.endpoint != null) {
+			env.walls.map(wall =>
+				{
+					if(wall.id == this.state.selection.lineId) {
+						wall[this.state.selection.endpoint][field] = v;
+					}
+					return wall;
+				}
+			);
+		}
+		this.setState({ env, path: null })
+	}
+
 	render() {
 		return (
 			<React.Fragment>
-				<div className="row"><div className="col"><ControlBar setMode={this.setMode} selectedAttributes={this.getSelectedAttributes()}/></div></div>
+				<div className="row"><div className="col"><ControlBar setMode={this.setMode} selectedAttributes={this.getSelectedAttributes()} onInputChanged={this.onInputChanged}/></div></div>
 				<div className="row"><div className="col">
 					<Display env={this.state.env} path={this.state.path} mode={this.state.mode} selection={this.state.selection}
 						wallStart={this.wallStart} wallEnd={this.wallEnd}

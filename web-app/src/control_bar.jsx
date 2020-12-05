@@ -22,13 +22,17 @@ class ControlBar extends React.Component {
 		this.props.setMode("pan");
 	}
 
+	inputChanged = attr => {
+		return (ev) => { this.props.onInputChanged(attr, ev.target.value); };
+	}
+
 	makeAttributeInputs = () => {
 		return Object.entries(this.props.selectedAttributes).map(attr => { return (
-			<div className="input-group col-md-2">
+			<div key={attr[0]} className="input-group col-md-2">
 				<div className="input-group-prepend">
     					<span className="input-group-text">{attr[0]}</span>
   				</div>
-				<input type="text" className="form-control" value={attr[1]} />
+				<input type="text" className="form-control" defaultValue={attr[1]} onChange={ this.inputChanged(attr[0]) }/>
 			</div>
 		); });
 	}
@@ -47,7 +51,7 @@ class ControlBar extends React.Component {
 						<div className="input-group-prepend">
     							<span className="input-group-text">speed</span>
   						</div>
-						<input type="text" className="form-control" value="25" />
+						<input type="text" className="form-control" defaultValue="25" onChange={ this.inputChanged("speed") } />
 					</div>
 					{ this.makeAttributeInputs() }
 				</div>
