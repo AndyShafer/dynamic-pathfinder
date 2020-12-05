@@ -20,9 +20,9 @@ class PlayBar extends React.Component {
 
 	getPlayOrPauseButton = () => {
 		if(this.props.paused) {
-			return <button type="button" onClick={this.play} className="btn btn-default btn-primary">Play</button>
+			return <button type="button" onClick={this.play} className="btn btn-default btn-primary"><i className="fas fa-play"></i></button>
 		} else {
-			return <button type="button" onClick={this.pause} className="btn btn-default btn-primary">Pause</button>
+			return <button type="button" onClick={this.pause} className="btn btn-default btn-primary"><i className="fas fa-pause"></i></button>
 		}
 	}
 
@@ -41,9 +41,9 @@ class PlayBar extends React.Component {
 						<input type="text" className="form-control" defaultValue={this.props.env.timeStep} onChange={ this.inputChanged("timeStep") } />
 					</div>
 			 		<div className="col-md-6">
-						<button type="button" onClick={this.reset} className="btn btn-default btn-primary">Back</button>
+						<button type="button" onClick={this.reset} className="btn btn-default btn-primary"><i className="fas fa-backward"></i></button>
 				 		{ this.getPlayOrPauseButton() }
-						<button type="button" className="btn btn-default btn-primary">Replay</button>
+						<button type="button" className="btn btn-default btn-primary"><i className="fas fa-redo-alt"></i></button>
 			 		</div>
 			 	</div>
 			</div>
