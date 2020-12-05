@@ -39,7 +39,7 @@ class ControlBar extends React.Component {
 
 	render() {
 		return (
-			<div id="control-bar" className="container mb-2 ">
+			<div id="control-bar" className="container mb-2 mt-2">
 				<div className="row">
 					<div className="col-md-2">
 						<button type="button" onClick={this.moveClicked} className="btn btn-default btn-primary">M</button>

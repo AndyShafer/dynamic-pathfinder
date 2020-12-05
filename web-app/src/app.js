@@ -25,7 +25,8 @@ class App extends React.Component {
 					}
 				],
 				speed: 25,
-				time: 0
+				time: 0,
+				timeStep: 1
 			},
 			paused: true,
 			mode: "move",
@@ -83,7 +84,7 @@ class App extends React.Component {
 			new Module.Wall(
 				new Module.Point(wall.point1.x, wall.point1.y, wall.point1.vx, wall.point1.vy),
 				new Module.Point(wall.point2.x, wall.point2.y, wall.point2.vx, wall.point2.vy))).forEach(wall => wallVector.push_back(wall));
-		var dypfEnv = new Module.Environment(this.state.env.start, this.state.env.end, wallVector, this.state.env.speed, 1);
+		var dypfEnv = new Module.Environment(this.state.env.start, this.state.env.end, wallVector, this.state.env.speed, this.state.env.timeStep);
 		var solver = new Module.Solver(Module.getEnvironmentPointer(dypfEnv));
 		var path = solver.solve();
 		this.setState({path});
@@ -154,8 +155,8 @@ class App extends React.Component {
 		if(!isNumeric(value)) return;
 		var v = parseFloat(value);
 		var env = this.state.env;
-		if(field == "speed") {
-			env.speed = v;
+		if(field == "speed" || field == "timeStep") {
+			env[field] = v;
 		} else if(this.state.selection == "start") {
 				env.start[field] = v;
 		} else if(this.state.selection == "end") {
@@ -193,7 +194,9 @@ class App extends React.Component {
 						onMouseMove={this.onMouseMove} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} onMouseClick={this.onMouseClick}/>
 				</div></div>
 				<div className="row"><div className="col">
-					<PlayBar onPlayClicked={this.onPlayClicked} onPauseClicked={this.onPauseClicked} onResetClicked={this.onResetClicked} paused={this.state.paused}/>
+					<PlayBar env={this.state.env}
+						onPlayClicked={this.onPlayClicked} onPauseClicked={this.onPauseClicked} onResetClicked={this.onResetClicked}
+						paused={this.state.paused} onInputChanged={this.onInputChanged}/>
 				</div></div>
 			</div>
 		);

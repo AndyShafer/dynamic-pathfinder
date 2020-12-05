@@ -26,12 +26,26 @@ class PlayBar extends React.Component {
 		}
 	}
 
+	inputChanged = attr => {
+		return (ev) => { this.props.onInputChanged(attr, ev.target.value); };
+	}
+
 	render() {
 		 return (
-			<div id="play-bar" style={{border: '3px solid #000000'}}>
-				<button type="button" onClick={this.reset} className="btn btn-default btn-primary">Back</button>
-			 	{ this.getPlayOrPauseButton() }
-				<button type="button" className="btn btn-default btn-primary">Replay</button>
+			<div id="play-bar" className="container mt-2">
+			 	<div className="row">
+					<div className="input-group col-md-3">
+						<div className="input-group-prepend">
+    							<span className="input-group-text">Time Step</span>
+  						</div>
+						<input type="text" className="form-control" defaultValue={this.props.env.timeStep} onChange={ this.inputChanged("timeStep") } />
+					</div>
+			 		<div className="col-md-6">
+						<button type="button" onClick={this.reset} className="btn btn-default btn-primary">Back</button>
+				 		{ this.getPlayOrPauseButton() }
+						<button type="button" className="btn btn-default btn-primary">Replay</button>
+			 		</div>
+			 	</div>
 			</div>
 		 );
 	}
