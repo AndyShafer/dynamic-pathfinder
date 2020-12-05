@@ -24,7 +24,7 @@ class App extends React.Component {
 			paused: true,
 			mode: "move",
 			path: null,
-			selection: null
+			selection: null,
 		};
 		setInterval(() => {
 			if(this.state.paused == false && this.state.path != null) {
@@ -33,6 +33,7 @@ class App extends React.Component {
 				this.setState(st);
 			}
 		}, updateIntervalMillis);
+		this.state.wallCount = this.state.env.walls.length;
 	}
 
 	setSelectionPos = (pos) => {
@@ -114,12 +115,29 @@ class App extends React.Component {
 		}
 	}
 
+	wallStart = (pos) => {
+		this.wallPoint1 = { x: pos.x, y: pos.y, vx: 0, vy: 0 };
+		this.setState( { path: null } );
+	}
+
+	wallEnd = (pos) => {
+		var wall = {
+			id: this.state.wallCount,
+			point1: this.wallPoint1,
+			point2: { x: pos.x, y: pos.y, vx: 0, vy: 0 }
+		};
+		var env = this.state.env;
+		env.walls.push(wall);
+		this.setState( { env, wallCount: this.state.wallCount + 1 } );
+	}
+
 	render() {
 		return (
 			<React.Fragment>
 				<div className="row"><div className="col"><ControlBar setMode={this.setMode}/></div></div>
 				<div className="row"><div className="col">
 					<Display env={this.state.env} path={this.state.path} mode={this.state.mode} selection={this.state.selection}
+						wallStart={this.wallStart} wallEnd={this.wallEnd}
 						onMouseMove={this.onMouseMove} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} onMouseClick={this.onMouseClick}/>
 				</div></div>
 				<div className="row"><div className="col">

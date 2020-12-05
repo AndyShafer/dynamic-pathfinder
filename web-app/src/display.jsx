@@ -56,22 +56,33 @@ class Display extends React.Component {
 		this.props.onMouseUp();
 	}
 
-	mouseMove = (ev) => {
+	cursorPos = (ev) => {
 		this.pt.x = ev.clientX;
 		this.pt.y = ev.clientY;
 		
 		// The cursor point, translated into svg coordinates
-		var cursorpt =  this.pt.matrixTransform(this.svg.getScreenCTM().inverse());
-		this.props.onMouseMove(cursorpt);
+		return  this.pt.matrixTransform(this.svg.getScreenCTM().inverse());
+	}
+
+	mouseMove = (ev) => {
+		this.props.onMouseMove(this.cursorPos(ev));
 	}
 
 	mouseClick = (point) => {
 		return () => this.props.onMouseClick(point);
 	}
 
-	render() {
-		 return (
-			<svg id="display" width="1080" height="600" style={{ border: '3px solid #000000' }} ref={(ref) => this.svg = ref} onMouseMove={ this.mouseMove }>
+	wallStart = (ev) => {
+		this.props.wallStart(this.cursorPos(ev));
+	}
+
+	wallEnd = (ev) => {
+		this.props.wallEnd(this.cursorPos(ev));
+	}
+
+	renderEnv = () => {
+		return (
+			<React.Fragment>
 				<circle cx={this.props.env.start.x} cy={this.props.env.start.y} r="10" stroke={this.getStroke("start")} strokeWidth="2" fill="green"
 			 		onMouseDown={ this.mouseDown("start") } onMouseUp={ this.mouseUp } onClick={ this.mouseClick("start") } />
 				<circle cx={this.props.env.end.x} cy={this.props.env.end.y} r="10" stroke={this.getStroke("end")} strokeWidth="2" fill="red"
@@ -87,8 +98,26 @@ class Display extends React.Component {
 					</React.Fragment>
 				)) }
 			 	{ this.pathPos() }
+			</React.Fragment>
+		);
+	}
+
+	render() {
+		console.log(this.props);
+		if(this.props.mode == "draw-wall") {
+			return (
+				<svg id="display" width="1080" height="600" style={{ border: '3px solid #000000' }} ref={(ref) => this.svg = ref}
+					onMouseMove={ this.mouseMove } onMouseDown={ this.wallStart } onMouseUp={ this.wallEnd }>
+					{ this.renderEnv() }
+				</svg>
+			);
+
+		}
+		return (
+			<svg id="display" width="1080" height="600" style={{ border: '3px solid #000000' }} ref={(ref) => this.svg = ref} onMouseMove={ this.mouseMove }>
+				{ this.renderEnv() }
 			</svg>
-		 );
+		);
 	}
 
 }
