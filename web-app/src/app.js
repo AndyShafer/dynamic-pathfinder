@@ -29,9 +29,10 @@ class App extends React.Component {
 				timeStep: 1
 			},
 			paused: true,
-			mode: "move",
+			mode: "edit",
 			path: null,
 			selection: null,
+			dragging: false
 		};
 		setInterval(() => {
 			if(this.state.paused == false && this.state.path != null) {
@@ -63,7 +64,7 @@ class App extends React.Component {
 				}
 			);
 		}
-		this.setState({ env: e });
+		this.setState({ env: e, path: null });
 	}
 
 	getSelectedAttributes = () => {
@@ -95,7 +96,7 @@ class App extends React.Component {
 	}
 
 	onPlayClicked = () => {
-		this.setState({ paused: false, mode: "animate", selection: null });
+		this.setState({ paused: false, mode: "pan", selection: null });
 		if(this.state.path == null) {
 			this.computePath();
 		}
@@ -108,29 +109,29 @@ class App extends React.Component {
 	onResetClicked = () => {
 		var st = this.state;
 		st.paused = true;
-		st.mode = "move";
+		st.mode = "pan";
 		st.env.time =  0;
 		this.setState(st);
 	}
 
 	onMouseDown = (point) => {
-		if(this.state.mode == "move") {
-			this.setState({ selection: point, path: null });
+		if(this.state.mode == "edit") {
+			this.setState({ selection: point, dragging: true });
 		}
 	}
 
 	onMouseUp = () => {
-		this.setState({ selection: null });
+		this.setState({ dragging: false });
 	}
 
 	onMouseMove = (pos) => {
-		if(this.state.paused && this.state.selection != null && this.state.mode == "move") {
+		if(this.state.paused && this.state.selection != null && this.state.mode == "edit" && this.state.dragging) {
 			this.setSelectionPos(pos);
 		}
 	}
 
 	onMouseClick = (point) => {
-		if(this.state.mode == "select") {
+		if(this.state.mode == "edit") {
 			this.setState({ selection: point });
 		}
 	}
@@ -187,7 +188,9 @@ class App extends React.Component {
 	render() {
 		return (
 			<div className="container" onKeyDown={this.onKeyDown}>
-				<div className="row"><div className="col"><ControlBar setMode={this.setMode} selectedAttributes={this.getSelectedAttributes()} onInputChanged={this.onInputChanged}/></div></div>
+				<div className="row"><div className="col">
+					<ControlBar env={this.state.env} setMode={this.setMode} selectedAttributes={this.getSelectedAttributes()} onInputChanged={this.onInputChanged}/>
+				</div></div>
 				<div className="row"><div className="col">
 					<Display env={this.state.env} path={this.state.path} mode={this.state.mode} selection={this.state.selection}
 						wallStart={this.wallStart} wallEnd={this.wallEnd}

@@ -30,8 +30,7 @@ class Display extends React.Component {
 	}
 
 	wallSelectCircles = (wall) => {
-		if(this.props.mode == "move" || this.props.mode == "select") {
-			return (
+		if(this.props.mode == "edit") { return (
 				<React.Fragment>
 					<circle cx={wall.point1.x + this.props.env.time * wall.point1.vx}
 						cy={wall.point1.y + this.props.env.time * wall.point1.vy}

@@ -6,12 +6,8 @@ class ControlBar extends React.Component {
 		this.state = {};
 	}
 
-	moveClicked = () => {
-		this.props.setMode("move");
-	}
-
-	selectClicked = () => {
-		this.props.setMode("select");
+	editClicked = () => {
+		this.props.setMode("edit");
 	}
 
 	wallClicked = () => {
@@ -32,7 +28,7 @@ class ControlBar extends React.Component {
 				<div className="input-group-prepend">
     					<span className="input-group-text">{attr[0]}</span>
   				</div>
-				<input type="text" className="form-control" defaultValue={attr[1]} onChange={ this.inputChanged(attr[0]) }/>
+				<input type="text" className="form-control" value={attr[1]} onChange={ this.inputChanged(attr[0]) }/>
 			</div>
 		); });
 	}
@@ -42,8 +38,7 @@ class ControlBar extends React.Component {
 			<div id="control-bar" className="container mb-2 mt-2">
 				<div className="row">
 					<div className="col-md-2">
-						<button type="button" onClick={this.moveClicked} className="btn btn-default btn-primary">M</button>
-						<button type="button" onClick={this.selectClicked} className="btn btn-default btn-primary">S</button>
+						<button type="button" onClick={this.editClicked} className="btn btn-default btn-primary">E</button>
 						<button type="button" onClick={this.wallClicked} className="btn btn-default btn-primary">W</button>
 						<button type="button" onClick={this.panClicked} className="btn btn-default btn-primary">P</button>
 					</div>
@@ -51,7 +46,7 @@ class ControlBar extends React.Component {
 						<div className="input-group-prepend">
     							<span className="input-group-text">speed</span>
   						</div>
-						<input type="text" className="form-control" defaultValue="25" onChange={ this.inputChanged("speed") } />
+						<input type="text" className="form-control" value={this.props.env.speed} onChange={ this.inputChanged("speed") } />
 					</div>
 					{ this.makeAttributeInputs() }
 				</div>
