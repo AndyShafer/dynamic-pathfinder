@@ -40,6 +40,7 @@ class App extends React.Component {
 			}
 		}, updateIntervalMillis);
 		this.state.wallCount = this.state.env.walls.length;
+		document.addEventListener("keydown", this.onKeyDown);
 	}
 
 	setSelectionPos = (pos) => {
@@ -171,10 +172,20 @@ class App extends React.Component {
 		}
 		this.setState({ env, path: null })
 	}
+	
+	onKeyDown = (ev) => {
+		if(ev.key === "Backspace") {
+			if(this.state.selection != null && this.state.selection.lineId != null) {
+				var env = this.state.env;
+				env.walls = env.walls.filter(wall => wall.id != this.state.selection.lineId);
+				this.setState({ env, selection: null, path: null });
+			}
+		}
+	}
 
 	render() {
 		return (
-			<React.Fragment>
+			<div className="container" onKeyDown={this.onKeyDown}>
 				<div className="row"><div className="col"><ControlBar setMode={this.setMode} selectedAttributes={this.getSelectedAttributes()} onInputChanged={this.onInputChanged}/></div></div>
 				<div className="row"><div className="col">
 					<Display env={this.state.env} path={this.state.path} mode={this.state.mode} selection={this.state.selection}
@@ -184,10 +195,11 @@ class App extends React.Component {
 				<div className="row"><div className="col">
 					<PlayBar onPlayClicked={this.onPlayClicked} onPauseClicked={this.onPauseClicked} onResetClicked={this.onResetClicked} paused={this.state.paused}/>
 				</div></div>
-			</React.Fragment>
+			</div>
 		);
 	}
 }
 
 const domContainer = document.querySelector('#app_container');
-ReactDOM.render(React.createElement(App), domContainer);
+var app = React.createElement(App);
+ReactDOM.render(app, domContainer);
