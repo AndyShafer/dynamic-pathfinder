@@ -58,6 +58,18 @@ class App extends React.Component {
 		this.setState({ env: e });
 	}
 
+	getSelectedAttributes = () => {
+		var e = this.state.env;
+		if(this.state.selection == "start") {
+			return e.start;
+		} else if(this.state.selection == "end") {
+			return e.end;
+		} else if(this.state.selection != null && this.state.selection.lineId != null && this.state.selection.endpoint != null) {
+			return e.walls.filter(wall => { return wall.id == this.state.selection.lineId; } )[0][this.state.selection.endpoint]; 
+		}
+		return {};
+	}
+
 	computePath = () => {
 		var wallVector = new Module.vector$Wall$;
 		var walls = this.state.env.walls.map(wall =>
@@ -134,7 +146,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<React.Fragment>
-				<div className="row"><div className="col"><ControlBar setMode={this.setMode}/></div></div>
+				<div className="row"><div className="col"><ControlBar setMode={this.setMode} selectedAttributes={this.getSelectedAttributes()}/></div></div>
 				<div className="row"><div className="col">
 					<Display env={this.state.env} path={this.state.path} mode={this.state.mode} selection={this.state.selection}
 						wallStart={this.wallStart} wallEnd={this.wallEnd}

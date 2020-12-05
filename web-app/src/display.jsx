@@ -103,7 +103,6 @@ class Display extends React.Component {
 	}
 
 	render() {
-		console.log(this.props);
 		if(this.props.mode == "draw-wall") {
 			return (
 				<svg id="display" width="1080" height="600" style={{ border: '3px solid #000000' }} ref={(ref) => this.svg = ref}
