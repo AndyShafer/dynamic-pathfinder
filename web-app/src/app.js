@@ -101,6 +101,11 @@ class App extends React.Component {
 
 	setMode = (mode) => {
 		this.setState({ mode, selection: null });
+		if(mode != "pan") {
+			var env = this.state.env;
+			env.time = 0;
+			this.setState({ env, paused: true });
+		}
 	}
 
 	onPlayClicked = () => {
