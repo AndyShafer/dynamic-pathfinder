@@ -62,6 +62,7 @@ class PlayBar extends React.Component {
 				 		{ this.getPlayOrPauseButton() }
 						<button type="button" onClick={this.repeat} className={ this.getButtonClasses("repeat") } title="Repeat"><i className="fas fa-redo-alt"></i></button>
 			 		</div>
+			 		<div className="col-md-3">time: {this.props.env.time.toFixed(2)}</div>
 			 	</div>
 			</div>
 		 );
