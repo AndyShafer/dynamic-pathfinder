@@ -229,7 +229,8 @@ class App extends React.Component {
 		return (
 			<div className="container" onKeyDown={this.onKeyDown}>
 				<div className="row"><div className="col">
-					<ControlBar env={this.state.env} mode={this.state.mode} setMode={this.setMode} selectedAttributes={this.getSelectedAttributes()} onInputChanged={this.onInputChanged}/>
+					<ControlBar env={this.state.env} mode={this.state.mode} dragging={this.state.dragging}
+						setMode={this.setMode} selectedAttributes={this.getSelectedAttributes()} onInputChanged={this.onInputChanged}/>
 				</div></div>
 				<div className="row"><div className="col">
 					<Display env={this.state.env} path={this.state.path} mode={this.state.mode} selection={this.state.selection} showPath={this.state.showPath}
