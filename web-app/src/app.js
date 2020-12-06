@@ -146,7 +146,7 @@ class App extends React.Component {
 
 	onMouseMove = (pos) => {
 		if(this.state.dragging) {
-			if(this.state.mode == "edit" && this.state.paused && this.state.selection != null) {
+			if(this.state.paused && this.state.selection != null) {
 				this.setSelectionPos(pos);
 			}
 		}
@@ -159,19 +159,16 @@ class App extends React.Component {
 	}
 
 	wallStart = (pos) => {
-		this.wallPoint1 = { x: pos.x, y: pos.y, vx: 0, vy: 0 };
-		this.setState( { path: null } );
+		var env = this.state.env;
+		env.walls.push({ 
+			id: this.state.wallCount,
+			point1: { x: pos.x, y: pos.y, vx: 0, vy: 0 },
+			point2: { x: pos.x, y: pos.y, vx: 0, vy: 0 }});
+		this.setState( { path: null, env, selection: { lineId: this.state.wallCount, endpoint: "point2" }, dragging: true, wallCount: this.state.wallCount + 1 } );
 	}
 
 	wallEnd = (pos) => {
-		var wall = {
-			id: this.state.wallCount,
-			point1: this.wallPoint1,
-			point2: { x: pos.x, y: pos.y, vx: 0, vy: 0 }
-		};
-		var env = this.state.env;
-		env.walls.push(wall);
-		this.setState( { env, wallCount: this.state.wallCount + 1 } );
+		this.setState( { dragging: false } );
 		if(this.state.showPath) {
 			this.computePath();
 		}
