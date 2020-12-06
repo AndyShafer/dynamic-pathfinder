@@ -38,6 +38,9 @@ class App extends React.Component {
 			if(this.state.paused == false && this.state.path != null) {
 				var st = this.state;
 				st.env.time += updateIntervalMillis / 1000;
+				if(st.env.time > this.state.path.getArriveTime()) {
+					st.env.time = this.state.path.getArriveTime();
+				}
 				this.setState(st);
 			}
 		}, updateIntervalMillis);
