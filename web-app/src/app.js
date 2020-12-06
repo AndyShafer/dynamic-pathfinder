@@ -214,7 +214,7 @@ class App extends React.Component {
 	
 	onKeyDown = (ev) => {
 		if(ev.key === "Backspace") {
-			if(this.state.selection != null && this.state.selection.lineId != null) {
+			if(this.state.selection != null && this.state.selection.lineId != null && document.activeElement.tagName != "INPUT") {
 				var env = this.state.env;
 				env.walls = env.walls.filter(wall => wall.id != this.state.selection.lineId);
 				this.setState({ env, selection: null, path: null });
