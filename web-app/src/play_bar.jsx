@@ -18,16 +18,33 @@ class PlayBar extends React.Component {
 		this.props.onResetClicked();
 	}
 
+	repeat = () => {
+		this.props.onRepeatClicked();
+	}
+
 	getPlayOrPauseButton = () => {
 		if(this.props.paused) {
-			return <button type="button" onClick={this.play} className="btn btn-default btn-info" title="Play"><i className="fas fa-play"></i></button>
+			return <button type="button" onClick={this.play} className={ this.getButtonClasses("play") } title="Play"><i className="fas fa-play"></i></button>
 		} else {
-			return <button type="button" onClick={this.pause} className="btn btn-default btn-info" title="Pause"><i className="fas fa-pause"></i></button>
+			return <button type="button" onClick={this.pause} className={ this.getButtonClasses("pause") } title="Pause"><i className="fas fa-pause"></i></button>
 		}
 	}
 
 	inputChanged = attr => {
 		return (ev) => { this.props.onInputChanged(attr, ev.target.value); };
+	}
+
+	getButtonClasses = (button) => {
+		var classes = "btn btn-default btn-info";
+		if(button == "back") {
+			classes += " mr-2";
+		} else if(button == "repeat") {
+			classes += " ml-2";
+			if(this.props.repeat) {
+				classes += " active";
+			}
+		}
+		return classes;
 	}
 
 	render() {
@@ -41,9 +58,9 @@ class PlayBar extends React.Component {
 						<input type="text" className="form-control" defaultValue={this.props.env.timeStep} onChange={ this.inputChanged("timeStep") } />
 					</div>
 			 		<div className="col-md-6">
-						<button type="button" onClick={this.reset} className="btn btn-default btn-info mr-2" title="Back"><i className="fas fa-backward"></i></button>
+						<button type="button" onClick={this.reset} className={ this.getButtonClasses("back") } title="Back"><i className="fas fa-backward"></i></button>
 				 		{ this.getPlayOrPauseButton() }
-						<button type="button" className="btn btn-default btn-info ml-2" title="Repeat"><i className="fas fa-redo-alt"></i></button>
+						<button type="button" onClick={this.repeat} className={ this.getButtonClasses("repeat") } title="Repeat"><i className="fas fa-redo-alt"></i></button>
 			 		</div>
 			 	</div>
 			</div>

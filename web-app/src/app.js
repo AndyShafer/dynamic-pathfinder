@@ -32,14 +32,19 @@ class App extends React.Component {
 			mode: "edit",
 			path: null,
 			selection: null,
-			dragging: false
+			dragging: false,
+			repeat: false
 		};
 		setInterval(() => {
 			if(this.state.paused == false && this.state.path != null) {
 				var st = this.state;
 				st.env.time += updateIntervalMillis / 1000;
 				if(st.env.time > this.state.path.getArriveTime()) {
-					st.env.time = this.state.path.getArriveTime();
+					if(this.state.repeat) {
+						st.env.time = 0;
+					} else {
+						st.env.time = this.state.path.getArriveTime();
+					}
 				}
 				this.setState(st);
 			}
@@ -115,6 +120,10 @@ class App extends React.Component {
 		st.mode = "pan";
 		st.env.time =  0;
 		this.setState(st);
+	}
+
+	onRepeatClicked = () => {
+		this.setState({ repeat: !this.state.repeat });
 	}
 
 	onMouseDown = (point) => {
@@ -201,8 +210,8 @@ class App extends React.Component {
 				</div></div>
 				<div className="row"><div className="col">
 					<PlayBar env={this.state.env}
-						onPlayClicked={this.onPlayClicked} onPauseClicked={this.onPauseClicked} onResetClicked={this.onResetClicked}
-						paused={this.state.paused} onInputChanged={this.onInputChanged}/>
+						onPlayClicked={this.onPlayClicked} onPauseClicked={this.onPauseClicked} onResetClicked={this.onResetClicked} onRepeatClicked={this.onRepeatClicked}
+						paused={this.state.paused} repeat={this.state.repeat} onInputChanged={this.onInputChanged}/>
 				</div></div>
 			</div>
 		);
