@@ -3,7 +3,9 @@
 class Display extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			offset: { x: 0, y: 0 }
+		};
 	}
 
 	componentDidMount() {
@@ -79,6 +81,34 @@ class Display extends React.Component {
 		this.props.wallEnd(this.cursorPos(ev));
 	}
 
+	panStart = (ev) => {
+		console.log("start");
+		this.panOrigin = {};
+		this.panOrigin.x = ev.clientX;
+		this.panOrigin.y = ev.clientY;
+		this.startingOffset = this.state.offset;
+	}
+
+	panEnd = () => {
+		this.panOrigin = null;
+	}
+
+	panMove = (ev) => {
+		if(this.panOrigin == null) return;
+		var dx = ev.clientX - this.panOrigin.x;
+		var dy = ev.clientY - this.panOrigin.y;
+
+		var offset = {};
+		offset.x = this.startingOffset.x - dx;
+		offset.y = this.startingOffset.y - dy;
+
+		this.setState({ offset });
+	}
+
+	getViewBox = () => {
+		return this.state.offset.x + " " + this.state.offset.y + " 1080 600";
+	}
+
 	renderEnv = () => {
 		return (
 			<React.Fragment>
@@ -104,15 +134,23 @@ class Display extends React.Component {
 	render() {
 		if(this.props.mode == "draw-wall") {
 			return (
-				<svg id="display" width="1080" height="600" style={{ border: '3px solid #000000' }} ref={(ref) => this.svg = ref}
+				<svg id="display" width="1080" height="600" viewBox={ this.getViewBox() } style={{ border: '3px solid #000000' }} ref={(ref) => this.svg = ref}
 					onMouseMove={ this.mouseMove } onMouseDown={ this.wallStart } onMouseUp={ this.wallEnd }>
 					{ this.renderEnv() }
 				</svg>
 			);
 
 		}
+		if(this.props.mode == "pan") {
+			return (
+				<svg id="display" width="1080" height="600" viewBox={ this.getViewBox() } style={{ border: '3px solid #000000', cursor: "move" }} ref={(ref) => this.svg = ref}
+					onMouseMove={ this.panMove } onMouseDown={ this.panStart } onMouseUp={ this.panEnd }>
+					{ this.renderEnv() }
+				</svg>
+			);
+		}
 		return (
-			<svg id="display" width="1080" height="600" style={{ border: '3px solid #000000' }} ref={(ref) => this.svg = ref} onMouseMove={ this.mouseMove }>
+			<svg id="display" width="1080" height="600" viewBox={ this.getViewBox() } style={{ border: '3px solid #000000' }} ref={(ref) => this.svg = ref} onMouseMove={ this.mouseMove }>
 				{ this.renderEnv() }
 			</svg>
 		);

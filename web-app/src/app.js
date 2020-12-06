@@ -137,8 +137,10 @@ class App extends React.Component {
 	}
 
 	onMouseMove = (pos) => {
-		if(this.state.paused && this.state.selection != null && this.state.mode == "edit" && this.state.dragging) {
-			this.setSelectionPos(pos);
+		if(this.state.dragging) {
+			if(this.state.mode == "edit" && this.state.paused && this.state.selection != null) {
+				this.setSelectionPos(pos);
+			}
 		}
 	}
 
