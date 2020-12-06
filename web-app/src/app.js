@@ -139,6 +139,9 @@ class App extends React.Component {
 
 	onMouseUp = () => {
 		this.setState({ dragging: false });
+		if(this.state.showPath && this.state.path == null) {
+			this.computePath();
+		}
 	}
 
 	onMouseMove = (pos) => {
@@ -169,6 +172,9 @@ class App extends React.Component {
 		var env = this.state.env;
 		env.walls.push(wall);
 		this.setState( { env, wallCount: this.state.wallCount + 1 } );
+		if(this.state.showPath) {
+			this.computePath();
+		}
 	}
 
 	onInputChanged = (field, value) => {
@@ -192,6 +198,18 @@ class App extends React.Component {
 			);
 		}
 		this.setState({ env, path: null })
+		if(this.state.showPath) {
+			this.computePath();
+		}
+	}
+
+	onCheckboxChanged = (field, value) => {
+		if(field == "showPath") {
+			this.setState({ showPath: value });
+			if(value && this.state.env.path == null) {
+				this.computePath();
+			}
+		}
 	}
 	
 	onKeyDown = (ev) => {
@@ -200,6 +218,9 @@ class App extends React.Component {
 				var env = this.state.env;
 				env.walls = env.walls.filter(wall => wall.id != this.state.selection.lineId);
 				this.setState({ env, selection: null, path: null });
+				if(this.state.showPath) {
+					this.computePath();
+				}
 			}
 		}
 	}
@@ -211,14 +232,14 @@ class App extends React.Component {
 					<ControlBar env={this.state.env} mode={this.state.mode} setMode={this.setMode} selectedAttributes={this.getSelectedAttributes()} onInputChanged={this.onInputChanged}/>
 				</div></div>
 				<div className="row"><div className="col">
-					<Display env={this.state.env} path={this.state.path} mode={this.state.mode} selection={this.state.selection}
+					<Display env={this.state.env} path={this.state.path} mode={this.state.mode} selection={this.state.selection} showPath={this.state.showPath}
 						wallStart={this.wallStart} wallEnd={this.wallEnd}
 						onMouseMove={this.onMouseMove} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} onMouseClick={this.onMouseClick}/>
 				</div></div>
 				<div className="row"><div className="col">
 					<PlayBar env={this.state.env}
 						onPlayClicked={this.onPlayClicked} onPauseClicked={this.onPauseClicked} onResetClicked={this.onResetClicked} onRepeatClicked={this.onRepeatClicked}
-						paused={this.state.paused} repeat={this.state.repeat} onInputChanged={this.onInputChanged}/>
+						paused={this.state.paused} repeat={this.state.repeat} onInputChanged={this.onInputChanged} onCheckboxChanged={this.onCheckboxChanged}/>
 				</div></div>
 			</div>
 		);

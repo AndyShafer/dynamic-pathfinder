@@ -31,6 +31,17 @@ class Display extends React.Component {
 		return null;
 	}
 
+	drawPath = () => {
+		var lines = [];
+		if(this.props.showPath && this.props.path != null) {
+			var segments = this.props.path.getSegments();
+			for(var i = 0; i < segments.size(); i++) {
+				lines.push(<line key={i} x1={segments.get(i).getStart().x} y1={segments.get(i).getStart().y} x2={segments.get(i).getEnd().x} y2={segments.get(i).getEnd().y} stroke="#6699ff"/>);
+			}
+		}
+		return lines;
+	}
+
 	wallSelectCircles = (wall) => {
 		if(this.props.mode == "edit") { return (
 				<React.Fragment>
@@ -82,7 +93,6 @@ class Display extends React.Component {
 	}
 
 	panStart = (ev) => {
-		console.log("start");
 		this.panOrigin = {};
 		this.panOrigin.x = ev.clientX;
 		this.panOrigin.y = ev.clientY;
@@ -126,6 +136,7 @@ class Display extends React.Component {
 						{ this.wallSelectCircles(wall) }
 					</React.Fragment>
 				)) }
+				{ this.drawPath() }
 			 	{ this.pathPos() }
 			</React.Fragment>
 		);

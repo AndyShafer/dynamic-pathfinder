@@ -34,6 +34,10 @@ class PlayBar extends React.Component {
 		return (ev) => { this.props.onInputChanged(attr, ev.target.value); };
 	}
 
+	checkboxChanged = attr => {
+		return (ev) => { this.props.onCheckboxChanged(attr, ev.target.checked); };
+	}
+
 	getButtonClasses = (button) => {
 		var classes = "btn btn-default btn-info";
 		if(button == "back") {
@@ -57,12 +61,14 @@ class PlayBar extends React.Component {
   						</div>
 						<input type="text" className="form-control" defaultValue={this.props.env.timeStep} onChange={ this.inputChanged("timeStep") } />
 					</div>
-			 		<div className="col-md-6">
+			 		<div className="col-md-2"></div>
+			 		<div className="col-md-2">
 						<button type="button" onClick={this.reset} className={ this.getButtonClasses("back") } title="Back"><i className="fas fa-backward"></i></button>
 				 		{ this.getPlayOrPauseButton() }
 						<button type="button" onClick={this.repeat} className={ this.getButtonClasses("repeat") } title="Repeat"><i className="fas fa-redo-alt"></i></button>
 			 		</div>
-			 		<div className="col-md-3">time: {this.props.env.time.toFixed(2)}</div>
+			 		<div className="col-md-3">Show Path: <input type="checkbox" id="show-path" name="Show Path" onChange={ this.checkboxChanged("showPath") }></input></div>
+			 		<div className="col-md-2">time: {this.props.env.time.toFixed(2)}</div>
 			 	</div>
 			</div>
 		 );

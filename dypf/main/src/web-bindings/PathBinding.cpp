@@ -11,4 +11,6 @@ EMSCRIPTEN_BINDINGS(path_binding) {
 		.function("getPos", &Path::getPos)
 		.function("getArriveTime", &Path::getArriveTime)
 		.function("getSegments", &Path::getSegments);
+
+	register_vector<PathSegment>("vector<PathSegment>");
 }
