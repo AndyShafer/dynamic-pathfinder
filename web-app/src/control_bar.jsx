@@ -38,13 +38,13 @@ class ControlBar extends React.Component {
 			<div id="control-bar" className="container mb-2 mt-2">
 				<div className="row">
 					<div className="col-md-2">
-						<button type="button" onClick={this.editClicked} className="btn btn-default btn-primary">
+						<button type="button" onClick={this.editClicked} className="btn btn-default btn-primary" title="Edit">
 							<i className="fas fa-edit"></i>
 						</button>
-						<button type="button" onClick={this.wallClicked} className="btn btn-default btn-primary ml-2">
+						<button type="button" onClick={this.wallClicked} className="btn btn-default btn-primary ml-2" title="Draw Wall">
 							<i className="fas fa-pencil-alt"></i>
 						</button>
-						<button type="button" onClick={this.panClicked} className="btn btn-default btn-primary ml-2">
+						<button type="button" onClick={this.panClicked} className="btn btn-default btn-primary ml-2" title="Pan">
 							<i className="fas fa-hand-paper"></i>
 						</button>
 					</div>
