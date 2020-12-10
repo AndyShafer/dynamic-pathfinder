@@ -40,4 +40,3 @@ test/*.env
 target/*
 
 web-app/node_modules/*
-web-app/js/*
